@@ -14,18 +14,20 @@ import DestinationCard from '@/components/features/destination-card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
 const popularDestinations = PlaceHolderImages.filter(d => ['paris', 'kyoto', 'santorini', 'new-york', 'maldives'].includes(d.id));
 const regions = PlaceHolderImages.filter(d => d.id.startsWith('region-'));
 const tripStyles = [
-  { icon: Waves, name: 'Beach' },
-  { icon: Mountain, name: 'Adventure' },
-  { icon: Landmark, name: 'Culture' },
-  { icon: Gem, name: 'Luxury' },
-  { icon: Sprout, name: 'Nature' },
-  { icon: Building2, name: 'City' },
+  { id: 'style-beach', name: 'Beach', icon: Waves, type: 'plane' },
+  { id: 'style-adventure', name: 'Adventure', icon: Mountain, type: 'train' },
+  { id: 'style-culture', name: 'Culture', icon: Landmark, type: 'plane' },
+  { id: 'style-luxury', name: 'Luxury', icon: Gem, type: 'plane' },
+  { id: 'style-nature', name: 'Nature', icon: Sprout, type: 'train' },
+  { id: 'style-city', name: 'City', icon: Building2, type: 'plane' },
 ];
+const tripStyleImages = PlaceHolderImages.filter(d => d.id.startsWith('style-'));
 const whyChooseUs = [
   {
     icon: BrainCircuit,
@@ -155,16 +157,46 @@ export default function Home() {
       {/* Trip Styles */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold font-headline mb-8">Find Your Trip Style</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            {tripStyles.map(style => (
-              <Card key={style.name} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer group">
-                <CardContent className="p-6 flex flex-col items-center justify-center gap-4">
-                  <style.icon className="w-12 h-12 text-primary transition-transform group-hover:scale-110" />
-                  <p className="font-bold font-headline text-lg">{style.name}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <h2 className="text-3xl md:text-4xl font-bold font-headline mb-12">Find Your Trip Style</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12">
+            {tripStyles.map(style => {
+              const image = tripStyleImages.find(img => img.id === style.id);
+              if (!image) return null;
+
+              const isTrain = style.type === 'train';
+
+              return (
+                <Link href="#" key={style.name} className="group relative flex flex-col items-center gap-4 cursor-pointer no-underline">
+                  {/* Window Frame */}
+                  <div className={cn(
+                    "relative aspect-[3/4] w-full bg-slate-900 border-4 border-slate-700/50 shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-primary/20",
+                    isTrain ? "rounded-2xl" : "rounded-[2.5rem]"
+                  )}>
+                    {/* Image inside */}
+                    <Image
+                      src={image.imageUrl}
+                      alt={image.description}
+                      fill
+                      className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                      data-ai-hint={image.imageHint}
+                    />
+                    {/* Inner Frame & Effects */}
+                    <div className={cn(
+                      "absolute inset-0 shadow-[inset_0_0_20px_10px_rgba(0,0,0,0.8)] ring-4 ring-inset ring-black/50 transition-all duration-300 group-hover:ring-primary/50",
+                      isTrain ? "rounded-[14px]" : "rounded-[2.2rem]"
+                    )} />
+                    {/* Reflection */}
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 via-white/0 to-white/5 opacity-50 -rotate-45 transition-opacity duration-300 group-hover:opacity-20" />
+                  </div>
+
+                  {/* Label */}
+                  <div className="flex flex-col items-center gap-2 transition-transform duration-300 group-hover:-translate-y-2">
+                    <style.icon className="w-8 h-8 text-primary" />
+                    <p className="font-bold font-headline text-lg text-foreground">{style.name}</p>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
