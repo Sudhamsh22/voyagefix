@@ -65,8 +65,8 @@
       "id": "package-europe",
       "name": "Historic European Cities",
       "description": "A multi-city tour of Europe's most iconic capitals.",
-      "imageUrl": "https://images.unsplash.com/photo-1528114999339-38c35b54c86a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxFdXJvcGUlMjBjaXR5fGVufDB8fHx8MTc3MTU5NTAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Europe city",
+      "imageUrl": "https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "old town Europe",
       "price": 2500,
       "rating": 4.7,
       "tag": "Multi-city"
@@ -75,8 +75,8 @@
       "id": "package-asia",
       "name": "Southeast Asia Adventure",
       "description": "Explore ancient temples, bustling markets, and pristine beaches.",
-      "imageUrl": "https://images.unsplash.com/photo-1596701547425-7834a383d476?q=80&w=1935&auto=format&fit=crop",
-      "imageHint": "jungle temple",
+      "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "Asia travel",
       "price": 1800,
       "rating": 4.8,
       "tag": "Adventure"
@@ -85,8 +85,8 @@
       "id": "package-safari",
       "name": "African Safari Experience",
       "description": "Witness the Great Migration and Africa's stunning wildlife.",
-      "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBbWVyaWNhbiUyMHNhZmFyaXxlbnwwfHx8fDE3NzE1OTUxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "African safari",
+      "imageUrl": "https://worldexpeditions.com/croppedimages/Africa/Namibia/Damaraland-Namibia-Africa-465428-1100px.jpg?1554870792",
+      "imageHint": "namibia desert",
       "price": 4500,
       "rating": 4.9,
       "tag": "Wildlife"
@@ -95,11 +95,21 @@
       "id": "package-islands",
       "name": "Tropical Island Hopping",
       "description": "Relax and recharge on some of the world's most beautiful islands.",
-      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc3MTU5NTE1NHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "tropical beach",
+      "imageUrl": "https://www.hilton.com/im/en/MLEGSQQ/26839646/areal-image-11-.jpg",
+      "imageHint": "island resort",
       "price": 2800,
       "rating": 4.7,
       "tag": "Beach"
+    },
+    {
+      "id": "package-mountains",
+      "name": "Mountain Trekking Expedition",
+      "description": "Conquer epic peaks and explore breathtaking trails.",
+      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "mountain landscape",
+      "price": 2100,
+      "rating": 4.6,
+      "tag": "Trekking"
     },
     {
       "id": "region-europe",
