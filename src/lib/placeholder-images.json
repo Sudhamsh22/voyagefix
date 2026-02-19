@@ -75,8 +75,8 @@
       "id": "package-asia",
       "name": "Southeast Asia Adventure",
       "description": "Explore ancient temples, bustling markets, and pristine beaches.",
-      "imageUrl": "https://images.stockcake.com/public/8/2/2/8227ff01-5a2f-4785-ba95-2a5670964b75_large/ancient-jungle-temple-stockcake.jpg",
-      "imageHint": "Asia travel",
+      "imageUrl": "https://images.unsplash.com/photo-1529989333908-96a992f28734?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "jungle temple",
       "price": 1800,
       "rating": 4.8,
       "tag": "Adventure"
