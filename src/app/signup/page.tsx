@@ -11,8 +11,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/firebase/provider";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -23,7 +21,6 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
-  const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,19 +31,33 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
-    if (!auth) {
-        toast({ variant: "destructive", title: "Sign-up Failed", description: "Firebase not initialized." });
-        setIsLoading(false);
-        return;
-    }
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName: data.name });
+      const res = await fetch("http://localhost:8000/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Signup failed");
       }
-      
-      router.push('/my-trips');
-      
+
+      toast({
+        title: "Account Created",
+        description: "You can now login with your credentials.",
+      });
+
+      router.push("/login");
+
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -54,7 +65,7 @@ export default function SignupPage() {
         description: error.message,
       });
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
