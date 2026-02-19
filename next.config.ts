@@ -76,6 +76,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.triptipedia.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
