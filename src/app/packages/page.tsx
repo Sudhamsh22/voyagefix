@@ -9,26 +9,23 @@ import { Badge } from "@/components/ui/badge";
 const packages = PlaceHolderImages.filter(p => p.id.startsWith('package-'));
 
 export default function PackagesPage() {
-  // A generic hero image for the packages page.
-  const heroImage = {
-    imageUrl: "https://images.unsplash.com/photo-1505832688684-f7a3036a18a5?q=80&w=2070&auto=format&fit=crop",
-    description: "Backpack and map on a wooden table for travel planning",
-    imageHint: "travel planning adventure",
-  };
+  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
 
   return (
     <div className="bg-background">
       {/* Hero Section */}
       <section className="relative h-[50vh] flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/60 z-10" />
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="object-cover"
-          data-ai-hint={heroImage.imageHint}
-          priority
-        />
+        {heroImage && (
+            <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            fill
+            className="object-cover"
+            data-ai-hint={heroImage.imageHint}
+            priority
+            />
+        )}
         <div className="relative z-20 container mx-auto px-4 md:px-6">
           <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tighter">
             Our Curated Travel Packages
