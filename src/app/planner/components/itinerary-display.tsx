@@ -22,9 +22,23 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 );
 
 export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
-  const heroImageUrl = heroImage?.imageUrl || `https://picsum.photos/seed/${itinerary.destination.replace(/[^a-zA-Z0-9]/g, '')}/${1200}/${400}`;
-  const heroImageHint = heroImage?.imageHint || itinerary.destination;
+  const genericImages = PlaceHolderImages.filter(img => img.type === 'generic');
+  let heroImageUrl: string;
+  let heroImageHint: string;
+
+  if (genericImages.length > 0) {
+    // Deterministically pick an image based on the destination name
+    const hash = itinerary.destination.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0);
+    const index = hash % genericImages.length;
+    const selectedImage = genericImages[index];
+    heroImageUrl = selectedImage.imageUrl;
+    heroImageHint = selectedImage.imageHint;
+  } else {
+    // Fallback to the main hero image if no generic images are available
+    const fallbackImage = PlaceHolderImages.find((img) => img.id === 'hero');
+    heroImageUrl = fallbackImage?.imageUrl || ''; // Provide a final empty string fallback
+    heroImageHint = fallbackImage?.imageHint || itinerary.destination;
+  }
 
   const startDate = parseISO(itinerary.itinerary[0].date);
   const endDate = parseISO(itinerary.itinerary[itinerary.itinerary.length - 1].date);
