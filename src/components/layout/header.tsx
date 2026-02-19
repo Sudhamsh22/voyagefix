@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, User as UserIcon, LogOut } from 'lucide-react';
+import { Menu, Search, User as UserIcon, LogOut, Globe, Briefcase, ClipboardList } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import {
@@ -18,11 +18,10 @@ import {
 import { useAuth } from '@/auth/provider';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/destinations', label: 'Destinations' },
-  { href: '/planner', label: 'AI Planner' },
-  { href: '/packages', label: 'Packages' },
-  { href: '/my-trips', label: 'My Trips' },
+  { href: '/destinations', label: 'Destinations', icon: Globe },
+  { href: '/planner', label: 'AI Planner', icon: ClipboardList },
+  { href: '/packages', label: 'Packages', icon: Briefcase },
+  { href: '/my-trips', label: 'My Trips', icon: UserIcon },
 ];
 
 export function Header() {
@@ -43,9 +42,11 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="group text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"
               >
-                {link.label}
+                <link.icon className="h-4 w-4" />
+                <span>{link.label}</span>
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-primary"></span>
               </Link>
             ))}
           </nav>
@@ -117,8 +118,9 @@ export function Header() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-lg font-medium text-foreground"
+                      className="text-lg font-medium text-foreground flex items-center gap-3"
                     >
+                      <link.icon className="h-5 w-5" />
                       {link.label}
                     </Link>
                   ))}

@@ -24,6 +24,9 @@
     --input: 0 0% 89.8%;
     --ring: 357 93% 47%;
     --radius: 0.5rem;
+    --accent-orange: 24 96% 53%;
+    --accent-blue: 205 90% 50%;
+    --accent-beige: 38 56% 85%;
   }
   .dark {
     --background: 0 0% 7.1%; /* #121212 */
@@ -45,6 +48,9 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 357 93% 47%;
+    --accent-orange: 24 96% 53%;
+    --accent-blue: 205 90% 50%;
+    --accent-beige: 38 56% 85%;
   }
 }
 

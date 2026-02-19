@@ -10,61 +10,122 @@
       "id": "paris",
       "description": "The Eiffel Tower in Paris",
       "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMGVpZmZlbHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Paris eiffel"
+      "imageHint": "Paris eiffel",
+      "country": "France",
+      "price": 1200,
+      "rating": 4.8,
+      "tag": "Culture"
     },
     {
       "id": "kyoto",
       "description": "Temples in Kyoto, Japan",
       "imageUrl": "https://images.unsplash.com/photo-1614334342593-656fdf19525d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxLeW90byUyMHRlbXBsZXxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Kyoto temple"
+      "imageHint": "Kyoto temple",
+      "country": "Japan",
+      "price": 1500,
+      "rating": 4.9,
+      "tag": "Historic"
     },
     {
       "id": "santorini",
       "description": "White buildings in Santorini, Greece",
       "imageUrl": "https://images.unsplash.com/photo-1688664562000-4c1f7cdb48f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxTYW50b3JpbmklMjBncmVlY2V8ZW58MHx8fHwxNzcxNDk0NTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Santorini greece"
+      "imageHint": "Santorini greece",
+      "country": "Greece",
+      "price": 2200,
+      "rating": 4.9,
+      "tag": "Relax"
     },
     {
       "id": "new-york",
       "description": "New York City skyline",
       "imageUrl": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxOZXclMjBZb3JrfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "New York"
+      "imageHint": "New York",
+      "country": "USA",
+      "price": 1100,
+      "rating": 4.7,
+      "tag": "City"
     },
     {
       "id": "maldives",
       "description": "Overwater bungalows in the Maldives",
       "imageUrl": "https://images.unsplash.com/photo-1512100254544-47340ba56b5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxNYWxkaXZlcyUyMHJlc29ydHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Maldives resort"
-    },
-    {
-      "id": "rome",
-      "description": "The Colosseum in Rome, Italy",
-      "imageUrl": "https://images.unsplash.com/photo-1666225908854-2495f1f4d83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxSb21lJTIwY29sb3NzZXVtfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Rome colosseum"
+      "imageHint": "Maldives resort",
+      "country": "Maldives",
+      "price": 3500,
+      "rating": 5,
+      "tag": "Luxury"
     },
     {
       "id": "package-europe",
-      "description": "Historic European cities",
+      "description": "Historic European Cities",
       "imageUrl": "https://images.unsplash.com/photo-1528114999339-38c35b54c86a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxFdXJvcGUlMjBjaXR5fGVufDB8fHx8MTc3MTU5NTAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Europe city"
+      "imageHint": "Europe city",
+      "price": 2500,
+      "rating": 4.7,
+      "tag": "Multi-city"
     },
     {
       "id": "package-asia",
-      "description": "Southeast Asia adventure",
+      "description": "Southeast Asia Adventure",
       "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBc2lhJTIwdHJhdmVsfGVufDB8fHx8MTc3MTU5NTA4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "Asia travel"
+      "imageHint": "Asia travel",
+      "price": 1800,
+      "rating": 4.8,
+      "tag": "Adventure"
     },
     {
       "id": "package-safari",
-      "description": "African safari experience",
+      "description": "African Safari Experience",
       "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBbWVyaWNhbiUyMHNhZmFyaXxlbnwwfHx8fDE3NzE1OTUxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "African safari"
+      "imageHint": "African safari",
+      "price": 4500,
+      "rating": 4.9,
+      "tag": "Wildlife"
     },
     {
       "id": "package-islands",
-      "description": "Tropical island hopping",
+      "description": "Tropical Island Hopping",
       "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc3MTU5NTE1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tropical beach",
+      "price": 2800,
+      "rating": 4.7,
+      "tag": "Beach"
+    },
+    {
+      "id": "region-europe",
+      "name": "Europe's Charm",
+      "description": "Cobblestone streets and ancient history",
+      "imageUrl": "https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "old town Europe"
+    },
+    {
+      "id": "region-asia",
+      "name": "Asian Adventures",
+      "description": "From bustling markets to serene temples",
+      "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "Asia travel"
+    },
+    {
+      "id": "region-safari",
+      "name": "African Safaris",
+      "description": "Witness majestic wildlife in its natural habitat",
+      "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "African safari"
+    },
+    {
+      "id": "region-islands",
+      "name": "Island Escapes",
+      "description": "Pristine beaches and turquoise waters await",
+      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=2070&auto=format&fit=crop",
       "imageHint": "tropical beach"
+    },
+    {
+      "id": "region-mountains",
+      "name": "Mountain Trails",
+      "description": "Breathtaking views from stunning peaks",
+      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "mountain landscape"
     }
   ]
 }
