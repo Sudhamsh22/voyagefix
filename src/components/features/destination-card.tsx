@@ -1,8 +1,10 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import type { ImagePlaceholder } from '@/lib/placeholder-images';
-import { Star, MapPin, Plane } from 'lucide-react';
+import { Star, MapPin, Plane, ExternalLink } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -83,7 +85,21 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
           </div>
           <div className="absolute bottom-0 left-0 p-4 w-full">
             <h3 className="font-headline text-2xl font-bold text-white capitalize">{name}</h3>
-            {destination.country && <p className="text-sm text-white/80">{destination.country}</p>}
+            <div className="flex items-center gap-2 mt-1">
+                {destination.country && <p className="text-sm text-white/80">{destination.country}</p>}
+                {destination.tourismLink && (
+                    <a
+                        href={destination.tourismLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-white/70 hover:text-white transition-colors"
+                        aria-label={`Official tourism site for ${destination.country}`}
+                    >
+                        <ExternalLink className="h-4 w-4" />
+                    </a>
+                )}
+            </div>
             <div className="flex justify-between items-end mt-2">
                 {destination.price ? (
                     <p className="text-lg font-bold text-white">From ${destination.price}</p>

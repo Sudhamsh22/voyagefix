@@ -13,6 +13,7 @@ export type ImagePlaceholder = {
   popularPlaces?: string[];
   glowColor?: string;
   type?: 'generic';
+  tourismLink?: string;
 };
 
 export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
