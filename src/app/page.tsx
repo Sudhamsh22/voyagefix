@@ -47,6 +47,7 @@ const whyChooseUs = [
 ];
 
 export default function Home() {
+  const sampleItineraryImage = PlaceHolderImages.find((img) => img.id === 'sample-itinerary-italy');
   return (
     <>
       {/* Hero Section */}
@@ -246,7 +247,15 @@ export default function Home() {
                         </Button>
                     </div>
                     <div className="relative h-64 md:h-full min-h-[300px]">
-                        <Image src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1966&auto=format&fit=crop" alt="Italy" fill className="object-cover" />
+                        {sampleItineraryImage && (
+                            <Image 
+                                src={sampleItineraryImage.imageUrl} 
+                                alt={sampleItineraryImage.description} 
+                                fill 
+                                className="object-cover"
+                                data-ai-hint={sampleItineraryImage.imageHint}
+                            />
+                        )}
                     </div>
                 </div>
             </Card>
