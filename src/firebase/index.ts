@@ -1,7 +1,6 @@
 'use client';
 
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 // This is a placeholder for your Firebase configuration.
@@ -27,16 +26,13 @@ function initializeFirebase() {
   }
 
   const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-  const auth = getAuth(app);
   const firestore = getFirestore(app);
 
   if (!emulatorsConnected) {
     try {
-        // As requested, auth emulator on port 8080.
-        connectAuthEmulator(auth, 'http://localhost:8080');
-        // Using 8081 for firestore as 8080 is taken by auth.
-        connectFirestoreEmulator(firestore, 'localhost', 8081);
-        console.log("Connecting to Firebase Emulators: Auth (8080), Firestore (8081)");
+        // Connect to Firestore emulator on port 8080
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
+        console.log("Connecting to Firebase Emulators: Firestore (8080)");
         emulatorsConnected = true;
     } catch (e) {
         // Catch errors if emulators are already connected or not running.
@@ -44,7 +40,7 @@ function initializeFirebase() {
     }
   }
 
-  return { app, auth, firestore };
+  return { app, firestore };
 }
 
 export { initializeFirebase };
