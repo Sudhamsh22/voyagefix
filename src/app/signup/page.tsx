@@ -11,6 +11,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+<<<<<<< HEAD
+=======
+import { useAuth, useFirestore } from "@/firebase/provider";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
+>>>>>>> 7d6b9ad (fix any issues if found)
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -21,6 +29,11 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
+<<<<<<< HEAD
+=======
+  const auth = useAuth();
+  const firestore = useFirestore();
+>>>>>>> 7d6b9ad (fix any issues if found)
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +44,7 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
+<<<<<<< HEAD
 
     try {
       const res = await fetch("http://localhost:8000/api/auth/signup", {
@@ -49,6 +63,37 @@ export default function SignupPage() {
 
       if (!res.ok) {
         throw new Error(result.message || "Signup failed");
+=======
+    if (!auth || !firestore) {
+        toast({ variant: "destructive", title: "Sign-up Failed", description: "Firebase not initialized." });
+        setIsLoading(false);
+        return;
+    }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+      
+      if (user) {
+        await updateProfile(user, { displayName: data.name });
+
+        const userProfileData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: data.name,
+        };
+
+        const userDocRef = doc(firestore, 'users', user.uid);
+
+        setDoc(userDocRef, userProfileData, { merge: true })
+          .catch((serverError) => {
+            const permissionError = new FirestorePermissionError({
+              path: userDocRef.path,
+              operation: 'create',
+              requestResourceData: userProfileData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+          });
+>>>>>>> 7d6b9ad (fix any issues if found)
       }
 
       toast({

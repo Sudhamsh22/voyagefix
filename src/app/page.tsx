@@ -166,7 +166,7 @@ export default function Home() {
               const isTrain = style.type === 'train';
 
               return (
-                <Link href="#" key={style.name} className="group relative flex flex-col items-center gap-4 cursor-pointer no-underline">
+                <Link href="/planner" key={style.name} className="group relative flex flex-col items-center gap-4 cursor-pointer no-underline">
                   {/* Window Frame */}
                   <div className={cn(
                     "relative aspect-[3/4] w-full bg-slate-900 border-4 border-slate-700/50 shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-primary/20",
