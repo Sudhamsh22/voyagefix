@@ -1,59 +1,27 @@
-import { suggestDestinations } from "@/ai/flows/ai-destination-suggestions";
 import DestinationCard from "@/components/features/destination-card";
-import { ImagePlaceholder, PlaceHolderImages } from "@/lib/placeholder-images";
+import { PlaceHolderImages, type ImagePlaceholder } from "@/lib/placeholder-images";
 
-const vibes = [
-  { name: "Romantic Getaways", preferences: ["romance", "couples", "scenic"] },
-  { name: "Thrilling Adventures", preferences: ["adventure", "hiking", "outdoors"] },
-  { name: "Luxury Escapes", preferences: ["luxury", "fine dining", "relaxation"] },
-  { name: "Family Fun", preferences: ["family-friendly", "activities", "safe"] },
+const vibeSections = [
+  {
+    name: "Romantic Getaways",
+    destinations: PlaceHolderImages.filter(d => ['santorini', 'paris', 'maldives', 'generic-dest-1'].includes(d.id))
+  },
+  {
+    name: "Thrilling Adventures",
+    destinations: PlaceHolderImages.filter(d => ['generic-dest-2', 'generic-dest-8', 'generic-dest-9', 'package-asia'].includes(d.id))
+  },
+  {
+    name: "Luxury Escapes",
+    destinations: PlaceHolderImages.filter(d => ['maldives', 'santorini', 'package-safari', 'style-luxury'].includes(d.id))
+  },
+  {
+    name: "Family Fun",
+    destinations: PlaceHolderImages.filter(d => ['new-york', 'package-europe', 'generic-dest-7', 'style-city'].includes(d.id))
+  },
 ];
 
-const genericDestinations = PlaceHolderImages.filter(img => img.type === 'generic');
 
-async function getVibeDestinations(preferences: string[], vibeIndex: number) {
-  try {
-    const result = await suggestDestinations({
-      preferences,
-      budget: "moderate",
-      season: "any",
-    });
-    if (!result || !result.destinations) return [];
-
-    if (genericDestinations.length === 0) {
-      // Fallback to picsum if no generic images are available
-      return result.destinations.map((dest) => ({
-        id: dest.name.toLowerCase().replace(/\s+/g, '-'),
-        name: dest.name,
-        description: dest.description,
-        imageUrl: `https://picsum.photos/seed/${dest.name.replace(/[^a-zA-Z0-9]/g, '')}/${400}/${600}`,
-        imageHint: dest.activities[0] || dest.name,
-      }));
-    }
-
-    return result.destinations.map((dest, destIndex) => {
-      const imagePoolIndex = (vibeIndex * 5 + destIndex) % genericDestinations.length;
-      const image = genericDestinations[imagePoolIndex];
-
-      return {
-        id: dest.name.toLowerCase().replace(/\s+/g, '-'),
-        name: dest.name,
-        description: dest.description,
-        imageUrl: image.imageUrl,
-        imageHint: image.imageHint,
-      }
-    });
-  } catch (e) {
-    console.error("Failed to fetch destinations for vibe:", preferences, e);
-    return [];
-  }
-}
-
-export default async function DestinationsPage() {
-  const allVibeDestinations = await Promise.all(
-    vibes.map((vibe, index) => getVibeDestinations(vibe.preferences, index))
-  );
-
+export default function DestinationsPage() {
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
       <div className="space-y-16">
@@ -62,16 +30,15 @@ export default async function DestinationsPage() {
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">Find your next adventure, inspired by your mood.</p>
         </div>
 
-        {vibes.map((vibe, index) => {
-          const destinations = allVibeDestinations[index];
-          if (!destinations || destinations.length === 0) return null;
+        {vibeSections.map((section) => {
+          if (!section.destinations || section.destinations.length === 0) return null;
 
           return (
-            <section key={vibe.name}>
-              <h2 className="text-3xl font-bold font-headline mb-8">{vibe.name}</h2>
+            <section key={section.name}>
+              <h2 className="text-3xl font-bold font-headline mb-8">{section.name}</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                {destinations.map((dest) => (
-                  <DestinationCard key={dest.id} destination={dest as ImagePlaceholder & {name?:string}} />
+                {section.destinations.map((dest) => (
+                  <DestinationCard key={dest.id} destination={dest as ImagePlaceholder} />
                 ))}
               </div>
             </section>
