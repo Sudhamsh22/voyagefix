@@ -3,18 +3,33 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, DollarSign, MapPin, Bus } from "lucide-react";
+import Image from "next/image";
 
 type ItineraryDisplayProps = {
     itinerary: AIGeneratedItineraryOutput;
 };
 
 export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
+  const heroImageUrl = `https://picsum.photos/seed/${itinerary.destination.replace(/[^a-zA-Z0-9]/g, '')}/${1200}/${400}`;
+
   return (
-    <Card className="bg-card/50 backdrop-blur-sm">
-        <CardHeader>
-            <CardTitle className="font-headline text-3xl">Your Custom Itinerary</CardTitle>
-            <CardDescription>{itinerary.tripSummary}</CardDescription>
-            {itinerary.totalEstimatedCost && <p className="text-lg font-bold pt-2">Total Estimated Cost: {itinerary.totalEstimatedCost}</p>}
+    <Card className="bg-card/50 backdrop-blur-sm overflow-hidden">
+        <div className="relative h-64 w-full">
+            <Image 
+                src={heroImageUrl}
+                alt={`Image of ${itinerary.destination}`}
+                fill
+                className="object-cover"
+                data-ai-hint={itinerary.destination}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-6">
+                <h2 className="font-headline text-4xl font-bold text-white">{itinerary.destination}</h2>
+                <p className="text-white/80 max-w-2xl mt-1">{itinerary.tripSummary}</p>
+            </div>
+        </div>
+        <CardHeader className="pt-6">
+            {itinerary.totalEstimatedCost && <p className="text-lg font-bold">Total Estimated Cost: {itinerary.totalEstimatedCost}</p>}
         </CardHeader>
         <CardContent>
             <Accordion type="single" collapsible defaultValue={`day-1`}>

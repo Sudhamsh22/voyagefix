@@ -39,6 +39,7 @@ const ItineraryDaySchema = z.object({
 });
 
 const AIGeneratedItineraryOutputSchema = z.object({
+  destination: z.string().describe('The travel destination city and country.'),
   tripSummary: z.string().describe('An overall summary of the generated trip itinerary.'),
   totalEstimatedCost: z.string().optional().describe('The estimated total cost for the entire trip (e.g., "$2000 per person, excluding flights/accommodation").'),
   itinerary: z.array(ItineraryDaySchema).describe('A detailed day-by-day itinerary.'),
@@ -53,7 +54,7 @@ const prompt = ai.definePrompt({
   name: 'aiGeneratedItineraryPrompt',
   input: {schema: AIGeneratedItineraryInputSchema},
   output: {schema: AIGeneratedItineraryOutputSchema},
-  prompt: `You are an expert travel agent specializing in creating personalized, detailed day-by-day itineraries. Your goal is to generate an engaging and practical travel plan based on the user's preferences.\n\nHere are the details for the trip:\nDestination: {{{destination}}}\nStart Date: {{{startDate}}}\nEnd Date: {{{endDate}}}\nBudget: {{{budget}}}\nInterests: {{{interests}}}\nNumber of Travelers: {{{travelers}}}\n\nPlease generate a detailed day-by-day itinerary for the trip.\nEach day should include a summary and a list of specific activities, including estimated times, names, descriptions, locations (if applicable), estimated cost per person for that activity, and suggested transportation.\nThe itinerary should cover the entire duration from the start date to the end date.\nAlso, provide an overall trip summary and an estimated total cost for the entire trip (excluding flights and primary accommodation, focusing on activities, food, and local transport).\n\nEnsure the output is a JSON object matching the provided output schema.`,
+  prompt: `You are an expert travel agent specializing in creating personalized, detailed day-by-day itineraries. Your goal is to generate an engaging and practical travel plan based on the user's preferences.\n\nHere are the details for the trip:\nDestination: {{{destination}}}\nStart Date: {{{startDate}}}\nEnd Date: {{{endDate}}}\nBudget: {{{budget}}}\nInterests: {{{interests}}}\nNumber of Travelers: {{{travelers}}}\n\nPlease generate a detailed day-by-day itinerary for the trip.\nEach day should include a summary and a list of specific activities, including estimated times, names, descriptions, locations (if applicable), estimated cost per person for that activity, and suggested transportation.\nThe itinerary should cover the entire duration from the start date to the end date.\nAlso, provide an overall trip summary and an estimated total cost for the entire trip (excluding flights and primary accommodation, focusing on activities, food, and local transport).\nReturn the original destination name in the 'destination' field.\n\nEnsure the output is a JSON object matching the provided output schema.`,
 });
 
 const aiGeneratedItineraryFlow = ai.defineFlow(
