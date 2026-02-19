@@ -27,13 +27,8 @@ const formSchema = z.object({
   destination: z.string().min(2, { message: "Destination must be at least 2 characters." }),
   dates: z.object({
     from: z.date({ required_error: "A start date is required." }),
-    to: z.date({ required_error: "An end date is required." }),
-  }, { required_error: "A date range is required." }).refine((data) => {
-    if (!data.from || !data.to) return true; // Let inner validation handle missing dates
-    return data.to >= data.from;
-  }, {
-    message: "End date must be on or after start date.",
-  }),
+    to: z.date().optional(),
+  }).optional(),
   budget: z.enum(['budget-friendly', 'moderate', 'luxury']),
   travelers: z.coerce.number().int().min(1, {message: 'Must have at least 1 traveler.'}),
   interests: z.array(z.string()).refine(value => value.some(item => item), {
@@ -58,10 +53,23 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.dates?.from || !values.dates?.to) {
+        form.setError("dates", { message: "A complete date range is required." });
+        return;
+    }
+    if (values.dates.to < values.dates.from) {
+        form.setError("dates", { message: "End date must be on or after start date." });
+        return;
+    }
+    
     onItineraryGenerated(null, true, null);
     try {
         const result = await aiGeneratedItinerary({
             ...values,
+            destination: values.destination,
+            budget: values.budget,
+            travelers: values.travelers,
+            interests: values.interests,
             startDate: format(values.dates.from, 'yyyy-MM-dd'),
             endDate: format(values.dates.to, 'yyyy-MM-dd'),
         });
@@ -129,8 +137,8 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
                         <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                             mode="range"
-                            selected={{ from: field.value?.from, to: field.value?.to }}
-                            onSelect={(range) => field.onChange(range)}
+                            selected={field.value}
+                            onSelect={field.onChange}
                             numberOfMonths={1}
                             disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
                         />
