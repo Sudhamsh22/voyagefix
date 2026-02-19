@@ -167,29 +167,29 @@
       "id": "style-beach",
       "name": "Beach",
       "description": "An aerial view of a coastline from an airplane window",
-      "imageUrl": "https://images.unsplash.com/photo-1518693850233-913c19a16f25?q=80&w=1974&auto=format&fit=crop",
-      "imageHint": "ocean airplane"
+      "imageUrl": "https://www.rd.com/wp-content/uploads/2025/05/This-Stunningly-Beautiful-Beach_GettyImages-482612302_FT.jpg",
+      "imageHint": "beach ocean"
     },
     {
       "id": "style-adventure",
       "name": "Adventure",
       "description": "A view of rugged mountains from a train window",
-      "imageUrl": "https://images.unsplash.com/photo-1599837563282-b3456b3e83a2?q=80&w=1964&auto=format&fit=crop",
-      "imageHint": "mountains train"
+      "imageUrl": "https://media.timeout.com/images/106150176/image.jpg",
+      "imageHint": "mountain adventure"
     },
     {
       "id": "style-culture",
       "name": "Culture",
       "description": "A historic European city skyline at dusk",
-      "imageUrl": "https://images.unsplash.com/photo-1529655683826-1c21ef242a5c?q=80&w=1964&auto=format&fit=crop",
-      "imageHint": "Rome skyline"
+      "imageUrl": "https://img.freepik.com/free-vector/multinational-culture-isometric-composition_1284-25974.jpg?semt=ais_user_personalization&w=740&q=80",
+      "imageHint": "culture people"
     },
     {
       "id": "style-luxury",
       "name": "Luxury",
       "description": "An aerial view of a luxury overwater bungalow resort",
-      "imageUrl": "https://images.unsplash.com/photo-1570229239508-81d374433c2a?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "luxury resort aerial"
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtg12rYHLNGo0mg5MdB3ZRP7d42W4XvckbxA&s",
+      "imageHint": "luxury villa"
     },
     {
       "id": "style-nature",
@@ -202,8 +202,8 @@
       "id": "style-city",
       "name": "City",
       "description": "A vibrant city skyline at night with glowing lights",
-      "imageUrl": "https://images.unsplash.com/photo-1549488344-c02c4d6a1b92?q=80&w=1974&auto=format&fit=crop",
-      "imageHint": "city night"
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5VLUxChuk6-Z3Bl3SoS45h8BuLozFXfhqPw&s",
+      "imageHint": "city street"
     },
     {
       "id": "sample-itinerary-italy",
