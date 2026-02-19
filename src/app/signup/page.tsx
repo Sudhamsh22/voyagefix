@@ -34,7 +34,7 @@ export default function SignupPage() {
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/signup', {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
