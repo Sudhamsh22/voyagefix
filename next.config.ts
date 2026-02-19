@@ -64,6 +64,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'worldexpeditions.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
