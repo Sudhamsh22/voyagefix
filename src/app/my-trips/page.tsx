@@ -4,12 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useUser } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useAuth } from "@/auth/provider";
 
 export default function MyTripsPage() {
-  const { user, isLoading } = useUser();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

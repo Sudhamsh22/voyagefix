@@ -19,8 +19,6 @@ function initializeFirebase() {
     return null;
   }
   
-  // For emulators, we can use a dummy project ID, but we'll keep this check
-  // to encourage good practice for production.
   if (firebaseConfig.apiKey.startsWith("REPLACE_WITH")) {
     console.warn("Firebase config is using placeholder values. For production, please update your configuration in src/firebase/index.ts.");
   }
@@ -29,10 +27,10 @@ function initializeFirebase() {
   const auth = getAuth(app);
   const firestore = getFirestore(app);
 
+
   return { app, auth, firestore };
 }
 
 export { initializeFirebase };
 
 export * from './provider';
-export * from './auth/use-user';

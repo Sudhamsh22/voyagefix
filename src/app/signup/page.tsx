@@ -8,11 +8,10 @@ import Link from "next/link";
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from "@/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/auth/provider";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -23,7 +22,7 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
-  const auth = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -34,17 +33,22 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
-    if (!auth) {
-      toast({
-        variant: "destructive",
-        title: "Sign-up Failed",
-        description: "Firebase is not configured. Please check your API keys.",
-      });
-      setIsLoading(false);
-      return;
-    }
     try {
-      await createUserWithEmailAndPassword(auth, data.email, data.password);
+      const response = await fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...data, displayName: data.name }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Sign-up failed');
+      }
+
+      const result = await response.json();
+      login(result);
       router.push('/my-trips');
     } catch (error: any) {
       toast({

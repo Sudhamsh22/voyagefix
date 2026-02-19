@@ -5,8 +5,6 @@ import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Search, User as UserIcon, LogOut } from 'lucide-react';
-import { useUser, useAuth } from '@/firebase';
-import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import {
@@ -17,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useAuth } from '@/auth/provider';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -27,15 +26,11 @@ const navLinks = [
 ];
 
 export function Header() {
-  const { user, isLoading } = useUser();
-  const auth = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const router = useRouter();
 
-  const handleLogout = async () => {
-    if (auth) {
-      await signOut(auth);
-    }
-    router.push('/');
+  const handleLogout = () => {
+    logout();
   };
   
   return (
