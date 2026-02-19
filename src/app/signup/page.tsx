@@ -11,14 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
-=======
 import { useAuth, useFirestore } from "@/firebase/provider";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
->>>>>>> 7d6b9ad (fix any issues if found)
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -29,11 +26,8 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
-<<<<<<< HEAD
-=======
   const auth = useAuth();
   const firestore = useFirestore();
->>>>>>> 7d6b9ad (fix any issues if found)
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -44,26 +38,6 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
-<<<<<<< HEAD
-
-    try {
-      const res = await fetch("http://localhost:8000/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || "Signup failed");
-=======
     if (!auth || !firestore) {
         toast({ variant: "destructive", title: "Sign-up Failed", description: "Firebase not initialized." });
         setIsLoading(false);
@@ -93,7 +67,6 @@ export default function SignupPage() {
             });
             errorEmitter.emit('permission-error', permissionError);
           });
->>>>>>> 7d6b9ad (fix any issues if found)
       }
 
       toast({
