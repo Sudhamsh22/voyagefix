@@ -8,6 +8,7 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/destinations', label: 'Destinations' },
   { href: '/planner', label: 'AI Planner' },
+  { href: '/packages', label: 'Packages' },
   { href: '/my-trips', label: 'My Trips' },
 ];
 
@@ -38,7 +39,7 @@ export function Header() {
             <Link href="/login">Login</Link>
           </Button>
           <Button asChild>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/planner">Plan Trip</Link>
           </Button>
         </div>
         <div className="md:hidden">
@@ -70,7 +71,7 @@ export function Header() {
                     <Link href="/login">Login</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/planner">Plan Trip</Link>
                   </Button>
                 </div>
               </div>

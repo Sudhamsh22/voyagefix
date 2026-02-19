@@ -41,6 +41,30 @@
       "description": "The Colosseum in Rome, Italy",
       "imageUrl": "https://images.unsplash.com/photo-1666225908854-2495f1f4d83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxSb21lJTIwY29sb3NzZXVtfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Rome colosseum"
+    },
+    {
+      "id": "package-europe",
+      "description": "Historic European cities",
+      "imageUrl": "https://images.unsplash.com/photo-1528114999339-38c35b54c86a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxFdXJvcGUlMjBjaXR5fGVufDB8fHx8MTc3MTU5NTAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Europe city"
+    },
+    {
+      "id": "package-asia",
+      "description": "Southeast Asia adventure",
+      "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBc2lhJTIwdHJhdmVsfGVufDB8fHx8MTc3MTU5NTA4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Asia travel"
+    },
+    {
+      "id": "package-safari",
+      "description": "African safari experience",
+      "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBbWVyaWNhbiUyMHNhZmFyaXxlbnwwfHx8fDE3NzE1OTUxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "African safari"
+    },
+    {
+      "id": "package-islands",
+      "description": "Tropical island hopping",
+      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc3MTU5NTE1NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tropical beach"
     }
   ]
 }
