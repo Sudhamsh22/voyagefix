@@ -28,6 +28,11 @@ const formSchema = z.object({
   dates: z.object({
     from: z.date({ required_error: "A start date is required." }),
     to: z.date({ required_error: "An end date is required." }),
+  }, { required_error: "A date range is required." }).refine((data) => {
+    if (!data.from || !data.to) return true; // Let inner validation handle missing dates
+    return data.to >= data.from;
+  }, {
+    message: "End date must be on or after start date.",
   }),
   budget: z.enum(['budget-friendly', 'moderate', 'luxury']),
   travelers: z.coerce.number().int().min(1, {message: 'Must have at least 1 traveler.'}),
