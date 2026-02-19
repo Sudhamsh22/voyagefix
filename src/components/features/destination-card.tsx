@@ -88,16 +88,17 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
             <div className="flex items-center gap-2 mt-1">
                 {destination.country && <p className="text-sm text-white/80">{destination.country}</p>}
                 {destination.tourismLink && (
-                    <a
-                        href={destination.tourismLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(destination.tourismLink, '_blank', 'noopener,noreferrer');
+                        }}
                         className="text-white/70 hover:text-white transition-colors"
                         aria-label={`Official tourism site for ${destination.country}`}
                     >
                         <ExternalLink className="h-4 w-4" />
-                    </a>
+                    </button>
                 )}
             </div>
             <div className="flex justify-between items-end mt-2">
