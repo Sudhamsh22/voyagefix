@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, DollarSign, MapPin, Bus, Calendar, Activity, Users, Plane, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { differenceInDays, format, parseISO } from 'date-fns';
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 type ItineraryDisplayProps = {
     itinerary: AIGeneratedItineraryOutput;
@@ -21,7 +22,9 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 );
 
 export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
-  const heroImageUrl = `https://picsum.photos/seed/${itinerary.destination.replace(/[^a-zA-Z0-9]/g, '')}/${1200}/${400}`;
+  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
+  const heroImageUrl = heroImage?.imageUrl || `https://picsum.photos/seed/${itinerary.destination.replace(/[^a-zA-Z0-9]/g, '')}/${1200}/${400}`;
+  const heroImageHint = heroImage?.imageHint || itinerary.destination;
 
   const startDate = parseISO(itinerary.itinerary[0].date);
   const endDate = parseISO(itinerary.itinerary[itinerary.itinerary.length - 1].date);
@@ -49,7 +52,7 @@ export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
                 alt={`Image of ${itinerary.destination}`}
                 fill
                 className="object-cover"
-                data-ai-hint={itinerary.destination}
+                data-ai-hint={heroImageHint}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
              <div className="absolute inset-0 flex items-center justify-center">

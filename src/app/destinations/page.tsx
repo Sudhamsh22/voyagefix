@@ -1,6 +1,6 @@
 import { suggestDestinations } from "@/ai/flows/ai-destination-suggestions";
 import DestinationCard from "@/components/features/destination-card";
-import { ImagePlaceholder } from "@/lib/placeholder-images";
+import { ImagePlaceholder, PlaceHolderImages } from "@/lib/placeholder-images";
 
 const vibes = [
   { name: "Romantic Getaways", preferences: ["romance", "couples", "scenic"] },
@@ -9,7 +9,9 @@ const vibes = [
   { name: "Family Fun", preferences: ["family-friendly", "activities", "safe"] },
 ];
 
-async function getVibeDestinations(preferences: string[]) {
+const genericDestinations = PlaceHolderImages.filter(img => img.type === 'generic');
+
+async function getVibeDestinations(preferences: string[], vibeIndex: number) {
   try {
     const result = await suggestDestinations({
       preferences,
@@ -18,13 +20,29 @@ async function getVibeDestinations(preferences: string[]) {
     });
     if (!result || !result.destinations) return [];
 
-    return result.destinations.map((dest) => ({
-      id: dest.name.toLowerCase().replace(/\s+/g, '-'),
-      name: dest.name,
-      description: dest.description,
-      imageUrl: `https://picsum.photos/seed/${dest.name.replace(/[^a-zA-Z0-9]/g, '')}/${400}/${600}`,
-      imageHint: dest.activities[0] || dest.name,
-    }));
+    if (genericDestinations.length === 0) {
+      // Fallback to picsum if no generic images are available
+      return result.destinations.map((dest) => ({
+        id: dest.name.toLowerCase().replace(/\s+/g, '-'),
+        name: dest.name,
+        description: dest.description,
+        imageUrl: `https://picsum.photos/seed/${dest.name.replace(/[^a-zA-Z0-9]/g, '')}/${400}/${600}`,
+        imageHint: dest.activities[0] || dest.name,
+      }));
+    }
+
+    return result.destinations.map((dest, destIndex) => {
+      const imagePoolIndex = (vibeIndex * 5 + destIndex) % genericDestinations.length;
+      const image = genericDestinations[imagePoolIndex];
+
+      return {
+        id: dest.name.toLowerCase().replace(/\s+/g, '-'),
+        name: dest.name,
+        description: dest.description,
+        imageUrl: image.imageUrl,
+        imageHint: image.imageHint,
+      }
+    });
   } catch (e) {
     console.error("Failed to fetch destinations for vibe:", preferences, e);
     return [];
@@ -33,7 +51,7 @@ async function getVibeDestinations(preferences: string[]) {
 
 export default async function DestinationsPage() {
   const allVibeDestinations = await Promise.all(
-    vibes.map(vibe => getVibeDestinations(vibe.preferences))
+    vibes.map((vibe, index) => getVibeDestinations(vibe.preferences, index))
   );
 
   return (

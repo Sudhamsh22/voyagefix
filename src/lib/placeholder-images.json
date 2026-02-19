@@ -211,6 +211,86 @@
       "description": "A collage of Italian landmarks like the Colosseum and Tuscan vineyards.",
       "imageUrl": "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1966&auto=format&fit=crop",
       "imageHint": "Italy collage"
+    },
+    {
+      "id": "generic-dest-1",
+      "name": "Coastal Paradise",
+      "description": "A stunning view of a coastal town with colorful buildings.",
+      "imageUrl": "https://images.unsplash.com/photo-1473625247510-8ceb1760943f?q=80&w=2069&auto=format&fit=crop",
+      "imageHint": "coastal town",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-2",
+      "name": "Mountain Majesty",
+      "description": "A breathtaking view of snow-capped mountains and a pristine lake.",
+      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "mountain lake",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-3",
+      "name": "Urban Jungle",
+      "description": "A vibrant cityscape with towering skyscrapers and bustling streets.",
+      "imageUrl": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "cityscape night",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-4",
+      "name": "Desert Oasis",
+      "description": "Golden sand dunes stretching across a vast desert landscape.",
+      "imageUrl": "https://images.unsplash.com/photo-1542314831-068cd1dbb563?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "desert dunes",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-5",
+      "name": "Tropical Escape",
+      "description": "Crystal clear turquoise water and a white sand beach with palm trees.",
+      "imageUrl": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "tropical beach",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-6",
+      "name": "Historic Wonders",
+      "description": "Ancient ruins against a dramatic sunset sky.",
+      "imageUrl": "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2071&auto=format&fit=crop",
+      "imageHint": "ancient ruins",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-7",
+      "name": "Countryside Charm",
+      "description": "Rolling green hills and a quaint village in the countryside.",
+      "imageUrl": "https://images.unsplash.com/photo-1473992243898-fa751525ac41?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "countryside village",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-8",
+      "name": "Lush Rainforest",
+      "description": "A dense rainforest with a waterfall cascading into a pool.",
+      "imageUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "rainforest waterfall",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-9",
+      "name": "Nordic Fjord",
+      "description": "A dramatic fjord with steep cliffs and calm water.",
+      "imageUrl": "https://images.unsplash.com/photo-1531393693826-85b34de591b9?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "norway fjord",
+      "type": "generic"
+    },
+    {
+      "id": "generic-dest-10",
+      "name": "Exotic Market",
+      "description": "A bustling market in a far-off land, full of colors and spices.",
+      "imageUrl": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "exotic market",
+      "type": "generic"
     }
   ]
 }
