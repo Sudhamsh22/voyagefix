@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero",
+      "description": "Cinematic hero image of a stunning travel destination",
+      "imageUrl": "https://images.unsplash.com/photo-1672774018781-2b6c40a1223f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dHJhdmVsJTIwbGFuZHNjYXBlfGVufDB8fHx8MTc3MTQwMTUwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "travel landscape"
+    },
+    {
+      "id": "paris",
+      "description": "The Eiffel Tower in Paris",
+      "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMGVpZmZlbHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Paris eiffel"
+    },
+    {
+      "id": "kyoto",
+      "description": "Temples in Kyoto, Japan",
+      "imageUrl": "https://images.unsplash.com/photo-1614334342593-656fdf19525d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxLeW90byUyMHRlbXBsZXxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Kyoto temple"
+    },
+    {
+      "id": "santorini",
+      "description": "White buildings in Santorini, Greece",
+      "imageUrl": "https://images.unsplash.com/photo-1688664562000-4c1f7cdb48f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxTYW50b3JpbmklMjBncmVlY2V8ZW58MHx8fHwxNzcxNDk0NTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Santorini greece"
+    },
+    {
+      "id": "new-york",
+      "description": "New York City skyline",
+      "imageUrl": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxOZXclMjBZb3JrfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "New York"
+    },
+    {
+      "id": "maldives",
+      "description": "Overwater bungalows in the Maldives",
+      "imageUrl": "https://images.unsplash.com/photo-1512100254544-47340ba56b5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxNYWxkaXZlcyUyMHJlc29ydHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Maldives resort"
+    },
+    {
+      "id": "rome",
+      "description": "The Colosseum in Rome, Italy",
+      "imageUrl": "https://images.unsplash.com/photo-1666225908854-2495f1f4d83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxSb21lJTIwY29sb3NzZXVtfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Rome colosseum"
+    }
+  ]
 }
