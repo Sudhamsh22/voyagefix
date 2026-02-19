@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { ArrowRight, BrainCircuit, Building2, Calendar, Check, Gem, Landmark, MapPin, Mountain, Plane, Sparkles, Sprout, Star, Users, Wallet, Waves } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Building2, Calendar, Check, Gem, Globe, Landmark, MapPin, Mountain, Plane, Sparkles, Sprout, Star, Users, Wallet, Waves } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import DestinationCard from '@/components/features/destination-card';
 import { Input } from '@/components/ui/input';
@@ -99,17 +99,37 @@ export default function Home() {
       {/* Explore by Region */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold font-headline mb-8">Explore by Region</h2>
-          <Carousel opts={{ align: 'start', loop: true }} className="w-full">
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            className="w-full relative"
+          >
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+              <div className="text-left">
+                <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3">
+                  <Globe className="w-8 h-8 text-primary" />
+                  Explore the World by Region
+                </h2>
+                <p className="mt-2 text-muted-foreground max-w-lg">
+                  Discover destinations across continents, each with its unique
+                  charm and adventures.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <CarouselPrevious className="relative -left-0 -top-0 -translate-y-0" />
+                <CarouselNext className="relative -right-0 -top-0 -translate-y-0" />
+              </div>
+            </div>
+
             <CarouselContent className="-ml-4">
               {regions.map((region) => (
-                <CarouselItem key={region.id} className="pl-4 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                <CarouselItem
+                  key={region.id}
+                  className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
+                >
                   <DestinationCard destination={region} />
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
           </Carousel>
         </div>
       </section>

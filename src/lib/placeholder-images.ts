@@ -10,6 +10,8 @@ export type ImagePlaceholder = {
   price?: number;
   rating?: number;
   tag?: string;
+  popularPlaces?: string[];
+  glowColor?: string;
 };
 
 export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;

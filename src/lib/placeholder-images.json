@@ -8,6 +8,7 @@
     },
     {
       "id": "paris",
+      "name": "Paris",
       "description": "The Eiffel Tower in Paris",
       "imageUrl": "https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMGVpZmZlbHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Paris eiffel",
@@ -18,6 +19,7 @@
     },
     {
       "id": "kyoto",
+      "name": "Kyoto",
       "description": "Temples in Kyoto, Japan",
       "imageUrl": "https://images.unsplash.com/photo-1614334342593-656fdf19525d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxLeW90byUyMHRlbXBsZXxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Kyoto temple",
@@ -28,6 +30,7 @@
     },
     {
       "id": "santorini",
+      "name": "Santorini",
       "description": "White buildings in Santorini, Greece",
       "imageUrl": "https://images.unsplash.com/photo-1688664562000-4c1f7cdb48f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxTYW50b3JpbmklMjBncmVlY2V8ZW58MHx8fHwxNzcxNDk0NTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Santorini greece",
@@ -38,6 +41,7 @@
     },
     {
       "id": "new-york",
+      "name": "New York",
       "description": "New York City skyline",
       "imageUrl": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxOZXclMjBZb3JrfGVufDB8fHx8MTc3MTQ5NDU5OXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "New York",
@@ -48,6 +52,7 @@
     },
     {
       "id": "maldives",
+      "name": "Maldives",
       "description": "Overwater bungalows in the Maldives",
       "imageUrl": "https://images.unsplash.com/photo-1512100254544-47340ba56b5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxNYWxkaXZlcyUyMHJlc29ydHxlbnwwfHx8fDE3NzE0OTQ1OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Maldives resort",
@@ -58,7 +63,8 @@
     },
     {
       "id": "package-europe",
-      "description": "Historic European Cities",
+      "name": "Historic European Cities",
+      "description": "A multi-city tour of Europe's most iconic capitals.",
       "imageUrl": "https://images.unsplash.com/photo-1528114999339-38c35b54c86a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxFdXJvcGUlMjBjaXR5fGVufDB8fHx8MTc3MTU5NTAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Europe city",
       "price": 2500,
@@ -67,7 +73,8 @@
     },
     {
       "id": "package-asia",
-      "description": "Southeast Asia Adventure",
+      "name": "Southeast Asia Adventure",
+      "description": "Explore ancient temples, bustling markets, and pristine beaches.",
       "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBc2lhJTIwdHJhdmVsfGVufDB8fHx8MTc3MTU5NTA4Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Asia travel",
       "price": 1800,
@@ -76,7 +83,8 @@
     },
     {
       "id": "package-safari",
-      "description": "African Safari Experience",
+      "name": "African Safari Experience",
+      "description": "Witness the Great Migration and Africa's stunning wildlife.",
       "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBbWVyaWNhbiUyMHNhZmFyaXxlbnwwfHx8fDE3NzE1OTUxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "African safari",
       "price": 4500,
@@ -85,7 +93,8 @@
     },
     {
       "id": "package-islands",
-      "description": "Tropical Island Hopping",
+      "name": "Tropical Island Hopping",
+      "description": "Relax and recharge on some of the world's most beautiful islands.",
       "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cm9waWNhbCUyMGJlYWNofGVufDB8fHx8MTc3MTU5NTE1NHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "tropical beach",
       "price": 2800,
@@ -95,37 +104,64 @@
     {
       "id": "region-europe",
       "name": "Europe's Charm",
-      "description": "Cobblestone streets and ancient history",
+      "description": "Historic cities & alpine escapes",
       "imageUrl": "https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "old town Europe"
+      "imageHint": "old town Europe",
+      "popularPlaces": [
+        "Paris",
+        "Rome",
+        "Swiss Alps"
+      ],
+      "glowColor": "group-hover:border-yellow-400"
     },
     {
       "id": "region-asia",
       "name": "Asian Adventures",
-      "description": "From bustling markets to serene temples",
+      "description": "Temples, jungles & megacities",
       "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "Asia travel"
+      "imageHint": "Asia travel",
+      "popularPlaces": [
+        "Bali",
+        "Kyoto",
+        "Bangkok"
+      ],
+      "glowColor": "group-hover:border-orange-500"
     },
     {
       "id": "region-safari",
       "name": "African Safaris",
-      "description": "Witness majestic wildlife in its natural habitat",
+      "description": "Wildlife & desert expeditions",
       "imageUrl": "https://images.unsplash.com/photo-1521633512268-d48a1b5d4332?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "African safari"
+      "imageHint": "African safari",
+      "popularPlaces": [
+        "Serengeti",
+        "Sahara"
+      ],
+      "glowColor": "group-hover:border-amber-600"
     },
     {
       "id": "region-islands",
       "name": "Island Escapes",
-      "description": "Pristine beaches and turquoise waters await",
+      "description": "Tropical beaches & lagoons",
       "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "tropical beach"
+      "imageHint": "tropical beach",
+      "popularPlaces": [
+        "Maldives",
+        "Bora Bora"
+      ],
+      "glowColor": "group-hover:border-sky-400"
     },
     {
       "id": "region-mountains",
       "name": "Mountain Trails",
-      "description": "Breathtaking views from stunning peaks",
+      "description": "Epic peaks & trekking routes",
       "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "mountain landscape"
+      "imageHint": "mountain landscape",
+      "popularPlaces": [
+        "Himalayas",
+        "Andes"
+      ],
+      "glowColor": "group-hover:border-cyan-300"
     }
   ]
 }
