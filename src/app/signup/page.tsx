@@ -11,7 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/auth/provider";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useAuth as useFirebaseAuth } from "@/firebase";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -22,7 +23,7 @@ const signupSchema = z.object({
 type SignupSchema = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
-  const { login } = useAuth();
+  const auth = useFirebaseAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,23 +33,22 @@ export default function SignupPage() {
   });
 
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
+    if (!auth) {
+      toast({
+        variant: "destructive",
+        title: "Sign-up Failed",
+        description: "Firebase is not configured correctly.",
+      });
+      return;
+    }
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...data, displayName: data.name }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Sign-up failed');
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      if (userCredential.user) {
+        await updateProfile(userCredential.user, {
+            displayName: data.name
+        });
       }
-
-      const result = await response.json();
-      login(result);
       router.push('/my-trips');
     } catch (error: any) {
       toast({
@@ -56,7 +56,8 @@ export default function SignupPage() {
         title: "Sign-up Failed",
         description: error.message,
       });
-      setIsLoading(false);
+    } finally {
+        setIsLoading(false);
     }
   };
 
@@ -71,17 +72,17 @@ export default function SignupPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" type="text" placeholder="John Doe" {...register("name")} />
+                    <Input id="name" type="text" placeholder="John Doe" {...register("name")} disabled={isLoading} />
                     {errors.name && <p className="text-destructive text-sm">{errors.name.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="m@example.com" {...register("email")} />
+                    <Input id="email" type="email" placeholder="m@example.com" {...register("email")} disabled={isLoading} />
                     {errors.email && <p className="text-destructive text-sm">{errors.email.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" {...register("password")} />
+                    <Input id="password" type="password" {...register("password")} disabled={isLoading} />
                     {errors.password && <p className="text-destructive text-sm">{errors.password.message}</p>}
                 </div>
                 <Button type="submit" className="w-full !mt-6" disabled={isLoading}>

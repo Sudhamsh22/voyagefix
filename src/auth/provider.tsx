@@ -1,17 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { onAuthStateChanged, signOut, type User } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-
-interface User {
-  displayName: string;
-  email: string;
-}
+import { useAuth as useFirebaseAuth } from '@/firebase';
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
-  login: (data: { user: User; token: string }) => void;
   logout: () => void;
   isLoading: boolean;
 }
@@ -19,44 +14,36 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const auth = useFirebaseAuth();
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    try {
-      const storedToken = localStorage.getItem('authToken');
-      const storedUser = localStorage.getItem('user');
-      if (storedToken && storedUser) {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+    if (auth) {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        setIsLoading(false);
+      });
+      return () => unsubscribe();
+    } else {
+      // If auth is not ready, keep loading.
+      // If it's explicitly null after firebase-js-sdk has loaded, stop loading.
+      if (auth === null) {
+          setUser(null);
+          setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Failed to parse auth data from localStorage', error);
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
-    } finally {
-      setIsLoading(false);
     }
-  }, []);
+  }, [auth]);
 
-  const login = useCallback((data: { user: User; token: string }) => {
-    setUser(data.user);
-    setToken(data.token);
-    localStorage.setItem('authToken', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-  }, []);
+  const logout = useCallback(async () => {
+    if (auth) {
+      await signOut(auth);
+      router.push('/');
+    }
+  }, [auth, router]);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    router.push('/');
-  }, [router]);
-
-  const value = { user, token, login, logout, isLoading };
+  const value = { user, logout, isLoading };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
