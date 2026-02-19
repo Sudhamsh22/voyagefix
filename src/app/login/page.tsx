@@ -8,9 +8,9 @@ import Link from "next/link";
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/auth/provider";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -20,9 +20,9 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -30,41 +30,17 @@ export default function LoginPage() {
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     setIsLoading(true);
-
     try {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || "Login failed");
-      }
-
-      // Store JWT + user info
-      localStorage.setItem("authToken", result.token);
-      localStorage.setItem("authUser", JSON.stringify(result.user));
-
+      await login(data.email, data.password);
       toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-
-      router.push("/my-trips");
-
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: error.message,
+        description: error.message || "An unknown error occurred.",
       });
     } finally {
       setIsLoading(false);

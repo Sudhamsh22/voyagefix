@@ -15,9 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useUser } from '@/firebase/auth/use-user';
-import { useAuth } from '@/firebase/provider';
-import { signOut } from 'firebase/auth';
+import { useAuth } from '@/auth/provider';
 
 const navLinks = [
   { href: '/destinations', label: 'Destinations', icon: Globe },
@@ -27,15 +25,11 @@ const navLinks = [
 ];
 
 export function Header() {
-  const { user, isLoading } = useUser();
-  const auth = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
-    if (auth) {
-      await signOut(auth);
-      router.push('/');
-    }
+    logout();
   };
   
   return (

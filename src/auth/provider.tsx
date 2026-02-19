@@ -3,11 +3,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-const API_URL = "http://localhost:8000";
+const API_URL = ""; // Use relative path for API routes
 
 interface User {
   id?: number;
-  name?: string;
+  displayName?: string; // Match the 'displayName' from the mock API response
   email?: string;
 }
 
@@ -28,15 +28,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('authUser');
+    try {
+      const storedToken = localStorage.getItem('authToken');
+      const storedUser = localStorage.getItem('authUser');
 
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      if (storedToken && storedUser) {
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error("Failed to access localStorage. Auth state will not be persisted.", error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -60,7 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('authToken', data.token);
     localStorage.setItem('authUser', JSON.stringify(data.user));
 
-    router.push('/dashboard');
+    router.push('/my-trips'); // Redirect to the trips page
+    router.refresh(); // Force a re-render to update components like the header
   }, [router]);
 
   const logout = useCallback(() => {
@@ -69,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('authToken');
     localStorage.removeItem('authUser');
     router.push('/');
+    router.refresh();
   }, [router]);
 
   return (
@@ -81,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

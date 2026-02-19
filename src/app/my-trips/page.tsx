@@ -6,10 +6,10 @@ import { Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useUser } from "@/firebase/auth/use-user";
+import { useAuth } from "@/auth/provider";
 
 export default function MyTripsPage() {
-  const { user, isLoading } = useUser();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
