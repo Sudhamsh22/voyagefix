@@ -11,8 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth as useFirebaseAuth } from "@/firebase";
+import { useAuth } from "@/auth/provider";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -22,7 +21,7 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const auth = useFirebaseAuth();
+  const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,18 +31,23 @@ export default function LoginPage() {
   });
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
-    if (!auth) {
-      toast({
-        variant: "destructive",
-        title: "Login Failed",
-        description: "Firebase is not configured correctly.",
-      });
-      return;
-    }
     setIsLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+
+      const session = await response.json();
+      login(session);
       router.push('/my-trips');
+
     } catch (error: any) {
       toast({
         variant: "destructive",
