@@ -79,15 +79,15 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
               <div className="md:col-span-2 flex items-center gap-2 bg-white/10 p-3 rounded-lg">
                 <MapPin className="text-primary" />
-                <Input type="text" placeholder="Where to?" className="bg-transparent border-0 text-white placeholder:text-white/70 focus-visible:ring-0" />
+                <Input type="text" placeholder="Where to?" className="bg-transparent border-0 text-white placeholder:text-white/70" />
               </div>
               <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg">
                 <Calendar className="text-primary" />
-                <Input type="text" placeholder="Dates" className="bg-transparent border-0 text-white placeholder:text-white/70 focus-visible:ring-0" />
+                <Input type="text" placeholder="Dates" className="bg-transparent border-0 text-white placeholder:text-white/70" />
               </div>
               <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg">
                 <Users className="text-primary" />
-                <Input type="number" placeholder="Travelers" className="bg-transparent border-0 text-white placeholder:text-white/70 focus-visible:ring-0" />
+                <Input type="number" placeholder="Travelers" className="bg-transparent border-0 text-white placeholder:text-white/70" />
               </div>
               <Button size="lg" asChild className="h-full group">
                 <Link href="/planner">

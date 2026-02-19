@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/auth/provider";
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -24,6 +25,7 @@ export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const { signup } = useAuth();
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
@@ -32,18 +34,7 @@ export default function SignupPage() {
   const onSubmit: SubmitHandler<SignupSchema> = async (data) => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.message || "Signup failed");
-      }
+      await signup(data.name, data.email, data.password);
 
       toast({
         title: "Account Created",

@@ -15,6 +15,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -61,24 +62,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(data.user);
     setToken(data.token);
 
-    localStorage.setItem('authToken', data.token);
-    localStorage.setItem('authUser', JSON.stringify(data.user));
+    try {
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('authUser', JSON.stringify(data.user));
+    } catch (error) {
+        console.error("Failed to write to localStorage.", error);
+    }
 
     router.push('/my-trips'); // Redirect to the trips page
     router.refresh(); // Force a re-render to update components like the header
   }, [router]);
 
+  const signup = useCallback(async (name: string, email: string, password: string) => {
+    const res = await fetch(`${API_URL}/api/auth/signup`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        throw new Error(data.message || 'Signup failed');
+    }
+  }, []);
+
   const logout = useCallback(() => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUser');
+    try {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+    } catch (error) {
+        console.error("Failed to remove from localStorage.", error);
+    }
     router.push('/');
     router.refresh();
   }, [router]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, login, signup, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
