@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Sparkles, Landmark, UtensilsCrossed, Mountain, Sprout, Martini, ShoppingBag, ArrowRight } from "lucide-react";
+import { CalendarIcon, Sparkles, Landmark, UtensilsCrossed, Mountain, Sprout, Martini, ShoppingBag } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -41,15 +41,6 @@ type PlannerFormProps = {
   isLoading: boolean;
 };
 
-const FormRow = ({ label, code, children }: { label: string, code: string, children: React.ReactNode }) => (
-    <div className="flex items-start justify-between gap-4 border-b border-white/5 py-4">
-        <div className="flex flex-col items-start">
-            <span className="text-xs font-mono text-muted-foreground">{code}</span>
-            <span className="font-semibold text-foreground">{label}</span>
-        </div>
-        <div className="w-1/2">{children}</div>
-    </div>
-);
 
 export default function PlannerForm({ onItineraryGenerated, isLoading }: PlannerFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,14 +55,19 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Clear previous errors
+    form.clearErrors();
+
+    let hasError = false;
     if (!values.dates?.from || !values.dates?.to) {
-        form.setError("dates", { message: "A complete date range is required." });
-        return;
+        form.setError("dates.from", { message: "A complete date range is required." });
+        hasError = true;
     }
-    if (values.dates.to < values.dates.from) {
-        form.setError("dates", { message: "End date must be on or after start date." });
-        return;
+    if (values.dates.from && values.dates.to && values.dates.to < values.dates.from) {
+        form.setError("dates.from", { message: "End date must be on or after start date." });
+        hasError = true;
     }
+    if(hasError) return;
     
     onItineraryGenerated(null, true, null);
     try {
@@ -81,8 +77,8 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
             budget: values.budget,
             travelers: values.travelers,
             interests: values.interests,
-            startDate: format(values.dates.from, 'yyyy-MM-dd'),
-            endDate: format(values.dates.to, 'yyyy-MM-dd'),
+            startDate: format(values.dates.from!, 'yyyy-MM-dd'),
+            endDate: format(values.dates.to!, 'yyyy-MM-dd'),
         });
         onItineraryGenerated(result, false, null);
     } catch (e) {
@@ -91,126 +87,132 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
     }
   }
 
-  const inputStyles = "bg-background/50 border-input/50 focus:bg-background/80 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:ring-offset-background";
+  const inputStyles = "w-full mt-1 bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-white focus-visible:ring-primary";
+  const labelStyles = "text-gray-400 text-sm";
 
   return (
-    <div className="bg-card/30 backdrop-blur-sm rounded-xl shadow-2xl border border-white/10">
-      <div className="p-4 border-b border-white/10">
-         <h2 className="font-headline text-lg text-center text-foreground">Flight Configuration</h2>
-      </div>
+    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
+      <h3 className="text-white font-semibold text-lg text-center mb-6">
+        Flight Configuration
+      </h3>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6">
-            <div className="space-y-2">
-                 <FormField
-                control={form.control}
-                name="destination"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormRow label="Destination" code="LOC">
-                            <FormControl>
-                                <Input placeholder="e.g., Bali" {...field} disabled={isLoading} className={inputStyles}/>
-                            </FormControl>
-                        </FormRow>
-                        <FormMessage className="text-right w-full mt-1 pr-1" />
-                    </FormItem>
-                )}
-                />
-                
-                <FormField
-                control={form.control}
-                name="dates"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormRow label="Departure Dates" code="DEP">
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                <FormControl>
-                                    <Button
-                                    variant={"outline"}
-                                    className={cn("w-full justify-start text-left font-normal", inputStyles, !field.value?.from && "text-muted-foreground" )}
-                                    disabled={isLoading}
-                                    >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {field.value?.from ? (
-                                        field.value.to ? (
-                                        <>
-                                            {format(field.value.from, "LLL d, y")} -{" "}
-                                            {format(field.value.to, "LLL d, y")}
-                                        </>
-                                        ) : (
-                                        format(field.value.from, "LLL d, y")
-                                        )
-                                    ) : (
-                                        <span>Select date range</span>
-                                    )}
-                                    </Button>
-                                </FormControl>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar
-                                    mode="range"
-                                    selected={field.value}
-                                    onSelect={field.onChange}
-                                    numberOfMonths={1}
-                                    disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
-                                />
-                                </PopoverContent>
-                            </Popover>
-                        </FormRow>
-                        <FormMessage className="text-right w-full mt-1 pr-1" />
-                    </FormItem>
-                )}
-                />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="destination"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={labelStyles}>Destination</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., Bali, Indonesia" {...field} disabled={isLoading} className={inputStyles}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="dates.from"
+              render={() => (
+                <FormItem>
+                  <FormLabel className={labelStyles}>Departure Dates</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn("w-full justify-start text-left font-normal", inputStyles, !form.getValues().dates.from && "text-muted-foreground" )}
+                          disabled={isLoading}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {form.getValues().dates.from ? (
+                            form.getValues().dates.to ? (
+                              <>
+                                {format(form.getValues().dates.from!, "LLL d, y")} -{" "}
+                                {format(form.getValues().dates.to!, "LLL d, y")}
+                              </>
+                            ) : (
+                              format(form.getValues().dates.from!, "LLL d, y")
+                            )
+                          ) : (
+                            <span>Select date range</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="range"
+                        selected={{ from: form.watch('dates.from'), to: form.watch('dates.to') }}
+                        onSelect={(range) => {
+                            form.setValue('dates.from', range?.from);
+                            form.setValue('dates.to', range?.to);
+                        }}
+                        numberOfMonths={1}
+                        disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <FormField
-                    control={form.control}
-                    name="travelers"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormRow label="Passengers" code="PAX">
+            <FormField
+              control={form.control}
+              name="travelers"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={labelStyles}>Passengers</FormLabel>
+                  <FormControl>
+                    <Input type="number" min="1" {...field} disabled={isLoading} className={inputStyles} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="budget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={labelStyles}>Fare Class</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
+                    <FormControl>
+                      <SelectTrigger className={inputStyles}>
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="budget-friendly">Economy</SelectItem>
+                      <SelectItem value="moderate">Business</SelectItem>
+                      <SelectItem value="luxury">First Class</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="interests"
+              render={() => (
+                <FormItem>
+                  <FormLabel className={labelStyles}>Trip Type</FormLabel>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 pt-1">
+                      {interests.map((item) => (
+                        <FormField
+                          key={item.id}
+                          control={form.control}
+                          name="interests"
+                          render={({ field }) => {
+                            return (
+                              <FormItem key={item.id} className="flex flex-row items-center space-x-2 space-y-0">
                                 <FormControl>
-                                    <Input type="number" min="1" {...field} disabled={isLoading} className={cn(inputStyles, "text-center font-mono")} />
-                                </FormControl>
-                            </FormRow>
-                            <FormMessage className="text-right w-full mt-1 pr-1" />
-                        </FormItem>
-                    )}
-                />
-                
-                <FormField
-                    control={form.control}
-                    name="budget"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormRow label="Fare Class" code="FARE">
-                                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
-                                    <FormControl>
-                                    <SelectTrigger className={inputStyles}>
-                                        <SelectValue placeholder="Select..." />
-                                    </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="budget-friendly">Economy</SelectItem>
-                                        <SelectItem value="moderate">Business</SelectItem>
-                                        <SelectItem value="luxury">First Class</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </FormRow>
-                            <FormMessage className="text-right w-full mt-1 pr-1" />
-                        </FormItem>
-                    )}
-                />
-                
-                <FormField
-                control={form.control}
-                name="interests"
-                render={({ field }) => (
-                    <FormItem>
-                         <FormRow label="Trip Type" code="TYPE">
-                            <div className="grid grid-cols-2 gap-2">
-                                {interests.map((item) => (
-                                    <button
-                                        key={item.id}
+                                   <button
                                         type="button"
                                         onClick={() => {
                                             const newInterests = field.value.includes(item.id)
@@ -219,29 +221,31 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
                                             field.onChange(newInterests);
                                         }}
                                         className={cn(
-                                            "flex items-center justify-center gap-2 p-2 rounded-md text-sm border transition-colors disabled:opacity-50",
+                                            "w-full flex items-center justify-center gap-2 p-2 rounded-md text-sm border transition-colors disabled:opacity-50",
                                             field.value.includes(item.id)
                                                 ? "bg-primary/20 border-primary text-primary-foreground"
-                                                : "bg-background/50 border-input/50 hover:bg-accent"
+                                                : "bg-black/40 border-white/20 hover:bg-white/10 text-white"
                                         )}
                                         disabled={isLoading}
                                     >
                                         <item.icon className="h-4 w-4" />
                                         <span>{item.label}</span>
                                     </button>
-                                ))}
-                            </div>
-                        </FormRow>
-                        <FormMessage className="text-right w-full mt-1 pr-1" />
-                    </FormItem>
-                )}
-                />
-            </div>
+                                </FormControl>
+                              </FormItem>
+                            )
+                          }}
+                        />
+                      ))}
+                    </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Button type="submit" className="w-full !mt-8 group" size="lg" disabled={isLoading}>
-                <Sparkles className="mr-2 h-4 w-4" />
-                {isLoading ? 'GENERATING...' : 'GENERATE ROUTE'}
-                <ArrowRight className="ml-auto h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+            <Button type="submit" className="w-full !mt-8 bg-primary hover:bg-primary/90 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-primary/30 transition" size="lg" disabled={isLoading}>
+              <Sparkles className="mr-2 h-4 w-4" />
+              {isLoading ? 'GENERATING...' : 'GENERATE ROUTE'}
             </Button>
         </form>
       </Form>

@@ -46,7 +46,7 @@ export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
   const totalActivities = itinerary.itinerary.reduce((acc, day) => acc + day.activities.length, 0);
 
   return (
-    <Card className="bg-card/50 backdrop-blur-sm overflow-hidden border border-white/10">
+    <Card className="bg-white/5 backdrop-blur-xl overflow-hidden border border-white/10 rounded-2xl">
         <div className="p-6 bg-black/20 border-b border-white/10">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 text-white">
