@@ -5,8 +5,7 @@ import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Search, User as UserIcon, LogOut, Globe, Briefcase, ClipboardList } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback } from '../ui/avatar';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from '@/auth/provider';
+import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 const navLinks = [
   { href: '/destinations', label: 'Destinations', icon: Globe },
@@ -27,46 +28,64 @@ const navLinks = [
 export function Header() {
   const { user, isLoading, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
 
-  const handleLogout = async () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleLogout = () => {
     logout();
   };
   
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-border/50">
-      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-8">
+    <header className={cn(
+      "fixed top-0 z-50 w-full transition-all duration-300 ease-in-out",
+      scrolled 
+        ? "bg-black/80 backdrop-blur-md border-b border-white/10"
+        : "bg-gradient-to-b from-black/90 via-black/60 to-transparent border-b border-transparent"
+    )}>
+      <div className="container mx-auto flex h-20 items-center justify-between px-10">
+        <div className="flex items-center gap-10">
           <Logo />
-          <nav className="hidden items-center gap-6 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="group text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center gap-2"
-              >
-                <link.icon className="h-4 w-4" />
-                <span>{link.label}</span>
-                <span className="block max-w-0 group-hover:max-w-full transition-all duration-300 h-0.5 bg-primary"></span>
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-8 md:flex">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "font-medium tracking-wide text-gray-300 transition-colors hover:text-white",
+                    isActive && "font-bold text-white relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-[2px] after:bg-primary after:rounded-full"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
-        <div className="hidden items-center gap-4 md:flex">
-          <Button variant="ghost" size="icon">
+        <div className="hidden items-center gap-6 md:flex">
+          <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
           </Button>
           
           {isLoading ? (
-            <div className="h-10 w-32 bg-muted animate-pulse rounded-md" />
+            <div className="h-9 w-24 bg-white/10 animate-pulse rounded-md" />
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar>
-                    <AvatarFallback>{user.displayName?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-                  </Avatar>
-                </Button>
+                 <button className="h-9 w-9 rounded-full bg-white/10 flex items-center justify-center text-white font-semibold hover:bg-white/20 transition">
+                    {user.displayName?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
@@ -91,7 +110,7 @@ export function Header() {
             </DropdownMenu>
           ) : (
             <>
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" asChild className="font-medium tracking-wide text-gray-300 hover:text-white">
                 <Link href="/login">Login</Link>
               </Button>
               <Button asChild>
@@ -103,14 +122,14 @@ export function Header() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] bg-background">
+            <SheetContent side="right" className="w-[300px] bg-black/90 backdrop-blur-md border-l border-white/10">
               <div className="flex h-full flex-col">
-                <div className="p-6 border-b border-border/50">
+                <div className="p-6 border-b border-white/10">
                   <Logo />
                 </div>
                 <nav className="flex flex-col gap-4 p-6">
@@ -120,12 +139,12 @@ export function Header() {
                       href={link.href}
                       className="text-lg font-medium text-foreground flex items-center gap-3"
                     >
-                      <link.icon className="h-5 w-5" />
+                      <link.icon className="h-5 w-5 text-primary" />
                       {link.label}
                     </Link>
                   ))}
                 </nav>
-                <div className="mt-auto flex flex-col gap-2 p-6 border-t border-border/50">
+                <div className="mt-auto flex flex-col gap-2 p-6 border-t border-white/10">
                    {user ? (
                      <Button variant="outline" onClick={handleLogout}>Logout</Button>
                   ) : (
