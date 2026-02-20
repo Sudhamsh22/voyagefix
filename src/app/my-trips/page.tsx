@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/auth/provider";
 import { useFirestore } from "@/firebase/provider";
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import type { AIGeneratedItineraryOutput } from "@/ai/flows/ai-generated-itinerary";
 import TripCard from "@/components/features/trip-card";
 
@@ -38,9 +38,17 @@ export default function MyTripsPage() {
         setIsLoading(true);
         try {
             const tripsCol = collection(db, 'trips');
-            const q = query(tripsCol, where("userEmail", "==", user.email), orderBy("createdAt", "desc"));
+            const q = query(tripsCol, where("userEmail", "==", user.email));
             const querySnapshot = await getDocs(q);
             const fetchedTrips = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as SavedTrip[];
+            
+            fetchedTrips.sort((a, b) => {
+                if (a.createdAt && b.createdAt) {
+                    return b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime();
+                }
+                return 0;
+            });
+
             setTrips(fetchedTrips);
         } catch (error) {
             console.error("Error fetching trips: ", error);
