@@ -51,47 +51,49 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-[90vh] w-full flex items-center justify-center text-center text-white">
-        <div className="absolute inset-0 bg-black/60 z-10" />
+      <section className="relative h-[85vh] w-full flex items-center justify-center text-center overflow-hidden group">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
             alt={heroImage.description}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
             data-ai-hint={heroImage.imageHint}
             priority
           />
         )}
-        <div className="relative z-20 container mx-auto px-4 md:px-6">
-          <Badge className='bg-white/20 backdrop-blur-sm text-white border-0 mb-4'>
+        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
+        
+        <div className="relative z-20 container mx-auto px-6 max-w-5xl">
+          <Badge className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm px-4 py-1.5 rounded-full mb-6 shadow font-medium">
             📍 Tuscany, Italy
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tighter">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg font-headline">
             Plan Your Next Journey with AI
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-foreground/80">
+          <p className="text-gray-300 text-lg mt-4 tracking-wide">
             Adventure • Vineyards • Scenic Drives
           </p>
           
           {/* Travel Search Bar */}
-          <div className="mt-8 max-w-4xl mx-auto p-4 bg-black/30 backdrop-blur-md rounded-2xl border border-white/20">
-            <div className="grid grid-cols-1 md:grid-cols-5 items-center gap-4">
-              <div className="md:col-span-2 flex items-center gap-2 bg-white/10 p-3 rounded-lg">
+          <div className="mt-10 max-w-4xl mx-auto p-3 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl">
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <div className="flex items-center gap-3 w-full flex-1 bg-black/40 hover:bg-black/60 rounded-xl px-5 py-4 text-left text-gray-300 transition">
                 <MapPin className="text-primary" />
-                <Input type="text" placeholder="Where to?" className="bg-transparent border-0 text-white placeholder:text-white/70" />
+                <Input type="text" placeholder="Where to?" className="bg-transparent border-0 text-white placeholder:text-white/70 w-full p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
-              <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg">
+              <div className="flex items-center gap-3 w-full md:w-auto bg-black/40 hover:bg-black/60 rounded-xl px-5 py-4 text-gray-300 transition">
                 <Calendar className="text-primary" />
-                <Input type="text" placeholder="Dates" className="bg-transparent border-0 text-white placeholder:text-white/70" />
+                <Input type="text" placeholder="Dates" className="bg-transparent border-0 text-white placeholder:text-white/70 w-full md:w-24 p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
-              <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg">
+              <div className="flex items-center gap-3 w-full md:w-auto bg-black/40 hover:bg-black/60 rounded-xl px-5 py-4 text-gray-300 transition">
                 <Users className="text-primary" />
-                <Input type="number" placeholder="Travelers" className="bg-transparent border-0 text-white placeholder:text-white/70" />
+                <Input type="number" placeholder="Travelers" className="bg-transparent border-0 text-white placeholder:text-white/70 w-full md:w-24 p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0" />
               </div>
-              <Button size="lg" asChild className="h-full group">
-                <Link href="/planner">
-                    Start Planning <Plane className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <Button asChild className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white font-semibold px-8 rounded-xl shadow-lg hover:shadow-primary/40 transition h-full py-4">
+                <Link href="/planner" className="flex items-center gap-2">
+                  Start Planning
                 </Link>
               </Button>
             </div>
