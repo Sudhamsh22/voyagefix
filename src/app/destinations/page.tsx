@@ -23,7 +23,7 @@ const vibeSections = [
 
 export default function DestinationsPage() {
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12">
+    <div className="container mx-auto px-4 md:px-6 pt-32 pb-12">
       <div className="space-y-16">
         <div className="text-center">
           <h1 className="text-4xl md:text-6xl font-bold font-headline">Explore Destinations</h1>

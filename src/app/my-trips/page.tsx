@@ -20,7 +20,7 @@ export default function MyTripsPage() {
 
   if (isLoading) {
     return (
-        <div className="container mx-auto px-4 md:px-6 py-12 flex items-center justify-center min-h-[60vh]">
+        <div className="container mx-auto px-4 md:px-6 pt-32 pb-12 flex items-center justify-center min-h-[60vh]">
             <div className="flex flex-col items-center justify-center">
                 <Sparkles className="h-16 w-16 text-primary animate-pulse" />
                 <p className="mt-4 text-lg font-semibold font-headline">Loading your trips...</p>
@@ -34,7 +34,7 @@ export default function MyTripsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-12">
+    <div className="container mx-auto px-4 md:px-6 pt-32 pb-12">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold font-headline">My Trips</h1>
         <Button asChild>
