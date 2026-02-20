@@ -1,4 +1,4 @@
-'use client'; // <-- Add this
+'use client';
 
 import { type AIGeneratedItineraryOutput } from "@/ai/flows/ai-generated-itinerary";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -47,8 +47,8 @@ export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
     if (!db) {
         toast({
             variant: "destructive",
-            title: "Not Connected to Firebase",
-            description: "Please configure your Firebase project in the .env file to save trips.",
+            title: "Database Not Connected",
+            description: "Please configure your Firebase project to save trips.",
         });
         return;
     }
