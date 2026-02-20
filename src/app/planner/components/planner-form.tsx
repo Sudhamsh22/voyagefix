@@ -7,11 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Sparkles, Landmark, UtensilsCrossed, Mountain, Sprout, Martini, ShoppingBag } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { Sparkles, Landmark, UtensilsCrossed, Mountain, Sprout, Martini, ShoppingBag } from "lucide-react";
 import { type AIGeneratedItineraryOutput, aiGeneratedItinerary } from "@/ai/flows/ai-generated-itinerary";
 
 const interests = [
@@ -25,15 +21,22 @@ const interests = [
 
 const formSchema = z.object({
   destination: z.string().min(2, { message: "Destination must be at least 2 characters." }),
-  dates: z.object({
-    from: z.date().optional(),
-    to: z.date().optional(),
-  }),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {message: "Use YYYY-MM-DD format."}),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {message: "Use YYYY-MM-DD format."}),
   budget: z.enum(['budget-friendly', 'moderate', 'luxury']),
   travelers: z.coerce.number().int().min(1, {message: 'Must have at least 1 traveler.'}),
   interests: z.array(z.string()).refine(value => value.some(item => item), {
     message: "You have to select at least one interest.",
   }),
+}).refine(data => {
+    try {
+        return new Date(data.endDate) >= new Date(data.startDate);
+    } catch {
+        return false;
+    }
+}, {
+    message: "End date must be on or after start date.",
+    path: ["endDate"],
 });
 
 type PlannerFormProps = {
@@ -47,7 +50,8 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
     resolver: zodResolver(formSchema),
     defaultValues: {
       destination: "",
-      dates: { from: undefined, to: undefined },
+      startDate: "",
+      endDate: "",
       budget: "moderate",
       travelers: 1,
       interests: ["culture"],
@@ -55,31 +59,9 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Clear previous errors
-    form.clearErrors();
-
-    let hasError = false;
-    if (!values.dates?.from || !values.dates?.to) {
-        form.setError("dates.from", { message: "A complete date range is required." });
-        hasError = true;
-    }
-    if (values.dates.from && values.dates.to && values.dates.to < values.dates.from) {
-        form.setError("dates.from", { message: "End date must be on or after start date." });
-        hasError = true;
-    }
-    if(hasError) return;
-    
     onItineraryGenerated(null, true, null);
     try {
-        const result = await aiGeneratedItinerary({
-            ...values,
-            destination: values.destination,
-            budget: values.budget,
-            travelers: values.travelers,
-            interests: values.interests,
-            startDate: format(values.dates.from!, 'yyyy-MM-dd'),
-            endDate: format(values.dates.to!, 'yyyy-MM-dd'),
-        });
+        const result = await aiGeneratedItinerary(values);
         onItineraryGenerated(result, false, null);
     } catch (e) {
         console.error(e);
@@ -111,53 +93,34 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
               )}
             />
             
-            <FormField
-              control={form.control}
-              name="dates.from"
-              render={() => (
-                <FormItem>
-                  <FormLabel className={labelStyles}>Departure Dates</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn("w-full justify-start text-left font-normal", inputStyles, !form.getValues().dates.from && "text-muted-foreground" )}
-                          disabled={isLoading}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {form.getValues().dates.from ? (
-                            form.getValues().dates.to ? (
-                              <>
-                                {format(form.getValues().dates.from!, "LLL d, y")} -{" "}
-                                {format(form.getValues().dates.to!, "LLL d, y")}
-                              </>
-                            ) : (
-                              format(form.getValues().dates.from!, "LLL d, y")
-                            )
-                          ) : (
-                            <span>Select date range</span>
-                          )}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="range"
-                        selected={{ from: form.watch('dates.from'), to: form.watch('dates.to') }}
-                        onSelect={(range) => {
-                            form.setValue('dates.from', range?.from);
-                            form.setValue('dates.to', range?.to);
-                        }}
-                        numberOfMonths={1}
-                        disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={labelStyles}>Start Date</FormLabel>
+                    <FormControl>
+                      <Input placeholder="YYYY-MM-DD" {...field} disabled={isLoading} className={inputStyles}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={labelStyles}>End Date</FormLabel>
+                    <FormControl>
+                      <Input placeholder="YYYY-MM-DD" {...field} disabled={isLoading} className={inputStyles}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -220,12 +183,12 @@ export default function PlannerForm({ onItineraryGenerated, isLoading }: Planner
                                                 : [...field.value, item.id];
                                             field.onChange(newInterests);
                                         }}
-                                        className={cn(
-                                            "w-full flex items-center justify-center gap-2 p-2 rounded-md text-sm border transition-colors disabled:opacity-50",
-                                            field.value.includes(item.id)
+                                        className={
+                                            "w-full flex items-center justify-center gap-2 p-2 rounded-md text-sm border transition-colors disabled:opacity-50 " +
+                                            (field.value.includes(item.id)
                                                 ? "bg-primary/20 border-primary text-primary-foreground"
-                                                : "bg-black/40 border-white/20 hover:bg-white/10 text-white"
-                                        )}
+                                                : "bg-black/40 border-white/20 hover:bg-white/10 text-white")
+                                        }
                                         disabled={isLoading}
                                     >
                                         <item.icon className="h-4 w-4" />
