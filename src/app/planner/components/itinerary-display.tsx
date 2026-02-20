@@ -1,11 +1,19 @@
+'use client'; // <-- Add this
+
 import { type AIGeneratedItineraryOutput } from "@/ai/flows/ai-generated-itinerary";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, DollarSign, MapPin, Bus, Calendar, Activity, Users, Plane, ArrowRight } from "lucide-react";
+import { Clock, DollarSign, MapPin, Bus, Calendar, Activity, Users, Plane, ArrowRight, Save } from "lucide-react";
 import Image from "next/image";
 import { differenceInDays, format, parseISO } from 'date-fns';
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useFirestore } from "@/firebase/provider";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useAuth } from "@/auth/provider";
+import { useToast } from "@/hooks/use-toast";
 
 type ItineraryDisplayProps = {
     itinerary: AIGeneratedItineraryOutput;
@@ -22,6 +30,52 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 );
 
 export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
+  const db = useFirestore();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveTrip = async () => {
+    if (!user || !user.email) {
+        toast({
+            variant: "destructive",
+            title: "Login Required",
+            description: "You must be logged in to save a trip.",
+        });
+        return;
+    }
+    if (!db) {
+        toast({
+            variant: "destructive",
+            title: "Not Connected to Firebase",
+            description: "Please configure your Firebase project in the .env file to save trips.",
+        });
+        return;
+    }
+
+    setIsSaving(true);
+    try {
+        await addDoc(collection(db, "trips"), {
+            ...itinerary,
+            userEmail: user.email,
+            createdAt: serverTimestamp(),
+        });
+        toast({
+            title: "Trip Saved!",
+            description: "Your itinerary has been saved to 'My Trips'.",
+        });
+    } catch (error) {
+        console.error("Error saving trip: ", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Could not save your trip. Please try again.",
+        });
+    } finally {
+        setIsSaving(false);
+    }
+  };
+
   const genericImages = PlaceHolderImages.filter(img => img.type === 'generic');
   let heroImageUrl: string;
   let heroImageHint: string;
@@ -54,9 +108,15 @@ export default function ItineraryDisplay({ itinerary }: ItineraryDisplayProps) {
                     <ArrowRight className="h-6 w-6 text-muted-foreground" />
                     <span className="font-mono text-2xl font-bold">{itinerary.destination.substring(0, 3).toUpperCase()}</span>
                 </div>
-                <div className="text-right">
-                    <p className="font-mono text-lg font-bold text-white">{format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}</p>
-                    <p className="text-xs text-muted-foreground">FLIGHT VF-2024</p>
+                <div className="flex items-center gap-4">
+                    <Button onClick={handleSaveTrip} disabled={isSaving}>
+                        <Save className="mr-2 h-4 w-4" />
+                        {isSaving ? 'SAVING...' : 'SAVE TRIP'}
+                    </Button>
+                    <div className="text-right">
+                        <p className="font-mono text-lg font-bold text-white">{format(startDate, 'MMM d')} - {format(endDate, 'MMM d, yyyy')}</p>
+                        <p className="text-xs text-muted-foreground">FLIGHT VF-2024</p>
+                    </div>
                 </div>
             </div>
         </div>

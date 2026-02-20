@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { AIChatAssistant } from '@/components/features/ai-chat-assistant';
 import { AuthProvider } from '@/auth/provider';
+import { FirebaseProvider } from '@/firebase/provider';
 
 export const metadata: Metadata = {
   title: 'VoyageFlix',
@@ -26,13 +27,15 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased")}>
         <AuthProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <AIChatAssistant />
-          <Toaster />
+          <FirebaseProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <AIChatAssistant />
+            <Toaster />
+          </FirebaseProvider>
         </AuthProvider>
       </body>
     </html>

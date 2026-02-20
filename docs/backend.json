@@ -1,36 +1,54 @@
 {
   "entities": {
-    "UserProfile": {
-      "title": "User Profile",
-      "description": "Represents a user's profile in the application.",
+    "TripItinerary": {
+      "title": "Trip Itinerary",
+      "description": "A generated travel itinerary, linked to a user by their email.",
       "type": "object",
       "properties": {
-        "uid": {
-          "type": "string",
-          "description": "The user's unique ID from Firebase Authentication."
-        },
-        "email": {
+        "userEmail": {
           "type": "string",
           "format": "email",
-          "description": "The user's email address."
+          "description": "The email of the user who created the itinerary."
         },
-        "displayName": {
+        "destination": {
           "type": "string",
-          "description": "The user's display name."
+          "description": "The travel destination city and country."
+        },
+        "tripSummary": {
+          "type": "string",
+          "description": "An overall summary of the generated trip itinerary."
+        },
+        "totalEstimatedCost": {
+          "type": "string",
+          "description": "The estimated total cost for the trip."
+        },
+        "travelers": {
+          "type": "number",
+          "description": "The number of travelers."
+        },
+        "itinerary": {
+          "type": "array",
+          "description": "A detailed day-by-day itinerary.",
+          "items": { "type": "object" }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the itinerary was created."
         }
       },
-      "required": ["uid", "email"]
+      "required": ["userEmail", "destination", "itinerary", "createdAt"]
     }
   },
   "auth": {
-    "providers": ["email-password", "google.com"]
+    "providers": []
   },
   "firestore": {
-    "/users/{userId}": {
+    "/trips/{tripId}": {
       "schema": {
-        "$ref": "#/entities/UserProfile"
+        "$ref": "#/entities/TripItinerary"
       },
-      "description": "Stores public information about a user."
+      "description": "Stores all generated trip itineraries."
     }
   }
 }

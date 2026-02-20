@@ -5,20 +5,58 @@ import { Button } from "@/components/ui/button";
 import { Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/auth/provider";
+import { useFirestore } from "@/firebase/provider";
+import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import type { AIGeneratedItineraryOutput } from "@/ai/flows/ai-generated-itinerary";
+import TripCard from "@/components/features/trip-card";
+
+type SavedTrip = AIGeneratedItineraryOutput & {
+    id: string;
+    createdAt: { toDate: () => Date };
+};
+
 
 export default function MyTripsPage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
+  const db = useFirestore();
+  const [trips, setTrips] = useState<SavedTrip[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isAuthLoading && !user) {
       router.push('/login');
     }
-  }, [user, isLoading, router]);
+  }, [user, isAuthLoading, router]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (user && user.email && db) {
+      const fetchTrips = async () => {
+        setIsLoading(true);
+        try {
+            const tripsCol = collection(db, 'trips');
+            const q = query(tripsCol, where("userEmail", "==", user.email), orderBy("createdAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            const fetchedTrips = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as SavedTrip[];
+            setTrips(fetchedTrips);
+        } catch (error) {
+            console.error("Error fetching trips: ", error);
+        } finally {
+            setIsLoading(false);
+        }
+      };
+      fetchTrips();
+    } else if (!isAuthLoading) {
+      setIsLoading(false);
+    }
+  }, [user, db, isAuthLoading]);
+
+  const pageLoading = isAuthLoading || isLoading;
+
+  if (pageLoading) {
     return (
         <div className="container mx-auto px-4 md:px-6 pt-32 pb-12 flex items-center justify-center min-h-[60vh]">
             <div className="flex flex-col items-center justify-center">
@@ -32,6 +70,10 @@ export default function MyTripsPage() {
   if (!user) {
     return null;
   }
+
+  const upcomingTrips = trips.filter(trip => trip.itinerary.length > 0 && new Date(trip.itinerary[0].date) >= new Date());
+  const pastTrips = trips.filter(trip => trip.itinerary.length > 0 && new Date(trip.itinerary[0].date) < new Date());
+
 
   return (
     <div className="container mx-auto px-4 md:px-6 pt-32 pb-12">
@@ -49,11 +91,19 @@ export default function MyTripsPage() {
           <CardHeader>
             <CardTitle>Upcoming Trips</CardTitle>
           </CardHeader>
-          <CardContent className="flex items-center justify-center text-center h-48 border-2 border-dashed rounded-lg">
-            <div>
-              <p className="text-muted-foreground">You have no upcoming trips.</p>
-              <p className="text-muted-foreground">Time to plan your next adventure!</p>
-            </div>
+          <CardContent>
+            {upcomingTrips.length === 0 ? (
+                <div className="flex items-center justify-center text-center h-48 border-2 border-dashed rounded-lg">
+                    <div>
+                        <p className="text-muted-foreground">You have no upcoming trips.</p>
+                        <p className="text-muted-foreground">Time to plan your next adventure!</p>
+                    </div>
+                </div>
+            ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {upcomingTrips.map(trip => <TripCard key={trip.id} trip={trip} />)}
+                </div>
+            )}
           </CardContent>
         </Card>
 
@@ -61,17 +111,16 @@ export default function MyTripsPage() {
           <CardHeader>
             <CardTitle>Past Trips</CardTitle>
           </CardHeader>
-          <CardContent className="flex items-center justify-center text-center h-48 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground">No travel history yet.</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Saved Itineraries</CardTitle>
-          </CardHeader>
-          <CardContent className="flex items-center justify-center text-center h-48 border-2 border-dashed rounded-lg">
-            <p className="text-muted-foreground">You have no saved itineraries.</p>
+          <CardContent>
+            {pastTrips.length === 0 ? (
+                 <div className="flex items-center justify-center text-center h-48 border-2 border-dashed rounded-lg">
+                    <p className="text-muted-foreground">No travel history yet.</p>
+                </div>
+            ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {pastTrips.map(trip => <TripCard key={trip.id} trip={trip} />)}
+                </div>
+            )}
           </CardContent>
         </Card>
       </div>
