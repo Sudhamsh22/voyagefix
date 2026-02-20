@@ -37,12 +37,11 @@ export default function SignupPage() {
       await signup(data.name, data.email, data.password);
 
       toast({
-        title: "Account Created",
-        description: "You can now login with your credentials.",
+        title: "Account Created & Logged In",
+        description: "Welcome! You're now being redirected.",
       });
 
-      router.push("/login");
-
+      // Redirect is handled by the auth provider after successful login
     } catch (error: any) {
       toast({
         variant: "destructive",

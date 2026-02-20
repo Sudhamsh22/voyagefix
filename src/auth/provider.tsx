@@ -3,11 +3,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-const API_URL = ""; // Use relative path for API routes
+const API_URL = "http://localhost:5000"; // Use Express backend
 
 interface User {
   id?: number;
-  displayName?: string; // Match the 'displayName' from the mock API response
+  displayName?: string; 
   email?: string;
 }
 
@@ -30,8 +30,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const storedToken = localStorage.getItem('authToken');
-      const storedUser = localStorage.getItem('authUser');
+      const storedToken = localStorage.getItem('voyageflix_token');
+      const storedUser = localStorage.getItem('voyageflix_user');
 
       if (storedToken && storedUser) {
         setToken(storedToken);
@@ -43,6 +43,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   }, []);
+
+  const handleAuthSuccess = useCallback((data: any) => {
+    const { token, user: backendUser } = data;
+    const userToStore = {
+      id: backendUser.id,
+      displayName: backendUser.name,
+      email: backendUser.email
+    };
+
+    setUser(userToStore);
+    setToken(token);
+
+    try {
+        localStorage.setItem('voyageflix_token', token);
+        localStorage.setItem('voyageflix_user', JSON.stringify(userToStore));
+    } catch (error) {
+        console.error("Failed to write to localStorage.", error);
+    }
+
+    router.push('/my-trips');
+    router.refresh();
+  }, [router]);
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await fetch(`${API_URL}/api/auth/login`, {
@@ -59,19 +81,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error(data.message || "Login failed");
     }
 
-    setUser(data.user);
-    setToken(data.token);
-
-    try {
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('authUser', JSON.stringify(data.user));
-    } catch (error) {
-        console.error("Failed to write to localStorage.", error);
-    }
-
-    router.push('/my-trips'); // Redirect to the trips page
-    router.refresh(); // Force a re-render to update components like the header
-  }, [router]);
+    handleAuthSuccess(data);
+  }, [handleAuthSuccess]);
 
   const signup = useCallback(async (name: string, email: string, password: string) => {
     const res = await fetch(`${API_URL}/api/auth/signup`, {
@@ -87,18 +98,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!res.ok) {
         throw new Error(data.message || 'Signup failed');
     }
-  }, []);
+    
+    handleAuthSuccess(data);
+  }, [handleAuthSuccess]);
 
   const logout = useCallback(() => {
     setUser(null);
     setToken(null);
     try {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authUser');
+        localStorage.removeItem('voyageflix_token');
+        localStorage.removeItem('voyageflix_user');
     } catch (error) {
         console.error("Failed to remove from localStorage.", error);
     }
-    router.push('/');
+    router.push('/login');
     router.refresh();
   }, [router]);
 
