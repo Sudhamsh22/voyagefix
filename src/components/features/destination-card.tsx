@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import type { ImagePlaceholder } from '@/lib/placeholder-images';
-import { Star, MapPin, Plane, ExternalLink } from 'lucide-react';
+import { Star, ExternalLink } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { cn } from '@/lib/utils';
 
@@ -18,46 +18,20 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
 
   if (isRegion) {
     return (
-      <Card className={cn(
-        "w-full overflow-hidden border-2 border-transparent bg-transparent group transition-all duration-300 ease-in-out hover:!scale-105 rounded-xl",
-        destination.glowColor
-      )}>
-        <Link href={`/destinations/${destination.id}`} className="block h-full">
-          <CardContent className="relative aspect-[3/4] p-0">
+        <Link href={`/destinations/${destination.id}`} className="block group relative w-64 h-96 rounded-xl overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:z-10">
             <Image
               src={destination.imageUrl}
               alt={destination.description}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover rounded-lg transition-transform duration-500 group-hover:scale-110"
+              sizes="(max-width: 768px) 50vw, 256px"
+              className="object-cover"
               data-ai-hint={destination.imageHint}
             />
-            {/* Vignette and Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent rounded-lg transition-all duration-300 group-hover:from-black/95 group-hover:via-black/60" />
-            <div className="absolute inset-0 rounded-lg shadow-[inset_0_0_80px_rgba(0,0,0,0.9)]" />
-
-            <Plane className="absolute top-4 right-4 h-6 w-6 text-white/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-            <div className="absolute bottom-0 left-0 p-4 md:p-5 w-full text-white">
-              <div className="transition-transform duration-300 group-hover:-translate-y-4">
-                <h3 className="font-headline text-3xl font-bold">{name}</h3>
-                <p className="text-sm text-white/80 mt-1 opacity-100 transition-opacity duration-300 group-hover:opacity-0">{destination.description}</p>
-              </div>
-              
-              <div className="absolute bottom-4 left-4 right-4 opacity-0 transition-all duration-300 group-hover:opacity-100">
-                 <p className="text-sm text-white/90 font-medium">{destination.description}</p>
-                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/70 mt-2">
-                    {destination.popularPlaces?.map(place => (
-                        <span key={place} className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3"/> {place}
-                        </span>
-                    ))}
-                 </div>
-              </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+            <div className="absolute bottom-5 left-5 right-5 text-white">
+              <h3 className="font-headline text-2xl font-bold">{name}</h3>
             </div>
-          </CardContent>
         </Link>
-      </Card>
     )
   }
 
@@ -91,7 +65,7 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
                     <button
                         type="button"
                         onClick={(e) => {
-                            e.stopPropagation();
+                            e.preventDefault();
                             window.open(destination.tourismLink, '_blank', 'noopener,noreferrer');
                         }}
                         className="text-white/70 hover:text-white transition-colors"

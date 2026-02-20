@@ -90,8 +90,8 @@
       "id": "package-safari",
       "name": "African Safari Experience",
       "description": "Witness the Great Migration and Africa's stunning wildlife.",
-      "imageUrl": "https://worldexpeditions.com/croppedimages/Africa/Namibia/Damaraland-Namibia-Africa-465428-1100px.jpg?1554870792",
-      "imageHint": "namibia desert",
+      "imageUrl": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e",
+      "imageHint": "savannah wildlife",
       "price": 4500,
       "rating": 4.9,
       "tag": "Wildlife"
@@ -100,7 +100,7 @@
       "id": "package-islands",
       "name": "Tropical Island Hopping",
       "description": "Relax and recharge on some of the world's most beautiful islands.",
-      "imageUrl": "https://www.hilton.com/im/en/MLEGSQQ/26839646/areal-image-11-.jpg",
+      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
       "imageHint": "island resort",
       "price": 2800,
       "rating": 4.7,
@@ -110,7 +110,7 @@
       "id": "package-mountains",
       "name": "Mountain Trekking Expedition",
       "description": "Conquer epic peaks and explore breathtaking trails.",
-      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
+      "imageUrl": "https://images.unsplash.com/photo-1464822759844-d150ad6d1a14",
       "imageHint": "mountain landscape",
       "price": 2100,
       "rating": 4.6,
@@ -120,8 +120,8 @@
       "id": "region-europe",
       "name": "Europe's Charm",
       "description": "Historic cities & alpine escapes",
-      "imageUrl": "https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "old town Europe",
+      "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+      "imageHint": "italy coast",
       "popularPlaces": [
         "Paris",
         "Rome",
@@ -133,8 +133,8 @@
       "id": "region-asia",
       "name": "Asian Adventures",
       "description": "Temples, jungles & megacities",
-      "imageUrl": "https://images.unsplash.com/photo-1532236203932-8c72d1746b12?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "Asia travel",
+      "imageUrl": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
+      "imageHint": "taj mahal",
       "popularPlaces": [
         "Bali",
         "Kyoto",
@@ -146,8 +146,8 @@
       "id": "region-safari",
       "name": "African Safaris",
       "description": "Wildlife & desert expeditions",
-      "imageUrl": "https://worldexpeditions.com/croppedimages/Africa/Namibia/Damaraland-Namibia-Africa-465428-1100px.jpg?1554870792",
-      "imageHint": "namibia desert",
+      "imageUrl": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e",
+      "imageHint": "savannah wildlife",
       "popularPlaces": [
         "Serengeti",
         "Sahara"
@@ -158,8 +158,8 @@
       "id": "region-islands",
       "name": "Island Escapes",
       "description": "Tropical beaches & lagoons",
-      "imageUrl": "https://www.hilton.com/im/en/MLEGSQQ/26839646/areal-image-11-.jpg",
-      "imageHint": "island resort",
+      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+      "imageHint": "tropical beach",
       "popularPlaces": [
         "Maldives",
         "Bora Bora"
@@ -170,8 +170,8 @@
       "id": "region-mountains",
       "name": "Mountain Trails",
       "description": "Epic peaks & trekking routes",
-      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "mountain landscape",
+      "imageUrl": "https://images.unsplash.com/photo-1464822759844-d150ad6d1a14",
+      "imageHint": "mountain range",
       "popularPlaces": [
         "Himalayas",
         "Andes"

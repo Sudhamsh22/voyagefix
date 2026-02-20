@@ -105,18 +105,16 @@ export default function Home() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <Carousel
-            opts={{ align: "start", loop: true }}
+            opts={{ align: 'start', loop: true }}
             className="w-full relative"
           >
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
               <div className="text-left">
-                <h2 className="text-3xl md:text-4xl font-bold font-headline flex items-center gap-3">
-                  <Globe className="w-8 h-8 text-primary" />
-                  Explore the World by Region
+                <h2 className="text-2xl md:text-3xl font-bold font-headline">
+                  Explore by Region
                 </h2>
-                <p className="mt-2 text-muted-foreground max-w-lg">
-                  Discover destinations across continents, each with its unique
-                  charm and adventures.
+                <p className="mt-2 text-muted-foreground">
+                  Discover destinations across continents.
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -125,11 +123,11 @@ export default function Home() {
               </div>
             </div>
 
-            <CarouselContent className="-ml-4">
+            <CarouselContent className="-ml-6">
               {regions.map((region) => (
                 <CarouselItem
                   key={region.id}
-                  className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
+                  className="pl-6 basis-auto"
                 >
                   <DestinationCard destination={region} />
                 </CarouselItem>
