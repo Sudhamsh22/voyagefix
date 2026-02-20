@@ -18,7 +18,7 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
 
   if (isRegion) {
     return (
-        <Link href={`/destinations/${destination.id}`} className="block group relative w-64 h-96 rounded-xl overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:z-10">
+        <Link href="/planner" className="block group relative w-64 h-96 rounded-xl overflow-hidden transition-transform duration-300 ease-in-out hover:scale-105 hover:z-10">
             <Image
               src={destination.imageUrl}
               alt={destination.description}
@@ -38,7 +38,7 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
   // Original Destination Card for trending destinations, etc.
   return (
     <Card className="w-full overflow-hidden border-0 bg-transparent group transition-all duration-300 ease-in-out hover:!scale-105">
-      <Link href={`/destinations/${destination.id}`} className="block h-full">
+      <Link href="/planner" className="block h-full">
         <CardContent className="relative aspect-[3/4] p-0">
           <Image
             src={destination.imageUrl}
