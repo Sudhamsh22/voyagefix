@@ -1,13 +1,102 @@
+'use client';
+
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import { Plane, Train } from "lucide-react";
+import { Plane, Train, Loader2 } from "lucide-react";
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+
+interface Ticket {
+  id: number;
+  airline: string;
+  type: string;
+  departure: string;
+  duration: string;
+  arrival: string;
+  class: string;
+  price: string;
+  priceValue: number;
+}
+
+const initialTickets: Ticket[] = [
+    { id: 1, airline: "Emirates", type: "Non-stop", departure: "10:30", duration: "5h 10m", arrival: "13:40", class: "Business", price: "₹42,000", priceValue: 42000 },
+    { id: 2, airline: "IndiGo", type: "1-stop", departure: "08:00", duration: "7h 30m", arrival: "15:30", class: "Economy", price: "₹25,000", priceValue: 25000 },
+    { id: 3, airline: "Vistara", type: "Non-stop", departure: "12:15", duration: "5h 00m", arrival: "17:15", class: "Business", price: "₹45,000", priceValue: 45000 },
+    { id: 4, airline: "Air India", type: "Non-stop", departure: "20:00", duration: "5h 15m", arrival: "01:15", class: "First Class", price: "₹85,000", priceValue: 85000 },
+];
 
 export default function BookingPage() {
-  const tickets = [
-    { id: 1, airline: "Emirates", type: "Non-stop", departure: "10:30", duration: "5h 10m", arrival: "13:40", class: "Business", price: "₹42,000" },
-    { id: 2, airline: "IndiGo", type: "1-stop", departure: "08:00", duration: "7h 30m", arrival: "15:30", class: "Economy", price: "₹25,000" },
-    { id: 3, airline: "Vistara", type: "Non-stop", departure: "12:15", duration: "5h 00m", arrival: "17:15", class: "Business", price: "₹45,000" },
-    { id: 4, airline: "Air India", type: "Non-stop", departure: "20:00", duration: "5h 15m", arrival: "01:15", class: "First Class", price: "₹85,000" },
-  ];
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [passengerName, setPassengerName] = useState('');
+  const [passportNumber, setPassportNumber] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const { toast } = useToast();
+  const router = useRouter();
+  const passengerDetailsRef = useRef<HTMLDivElement>(null);
+
+  const handleSelectTicket = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setErrors({});
+  };
+
+  const handleContinue = () => {
+    if (!selectedTicket) {
+      toast({
+        variant: "destructive",
+        title: "No Ticket Selected",
+        description: "Please select a flight before continuing.",
+      });
+      return;
+    }
+    passengerDetailsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    if (!passengerName.trim()) newErrors.passengerName = "Full Name is required.";
+    if (!passportNumber.trim()) newErrors.passportNumber = "Passport Number is required.";
+    if (cardNumber.replace(/\s/g, '').length !== 16) newErrors.cardNumber = "Card number must be 16 digits.";
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) newErrors.expiryDate = "Expiry must be in MM/YY format.";
+    if (cvv.length !== 3) newErrors.cvv = "CVV must be 3 digits.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBookTicket = async () => {
+    if (!selectedTicket) {
+      toast({ variant: "destructive", title: "Please select a ticket first." });
+      return;
+    }
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: "Booking Successful!",
+        description: `Your flight with ${selectedTicket.airline} is confirmed.`,
+      });
+
+      const bookingDetails = {
+        ticket: selectedTicket,
+        passenger: { name: passengerName },
+        paymentLast4: cardNumber.slice(-4),
+        bookingId: `VF-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+      };
+      
+      router.push(`/booking-confirmation?data=${encodeURIComponent(JSON.stringify(bookingDetails))}`);
+    }, 2000);
+  };
+
 
   return (
     <main className="bg-gradient-to-b from-black via-[#0b0b0f] to-black min-h-screen pt-20">
@@ -48,8 +137,16 @@ export default function BookingPage() {
         <div className="col-span-12 lg:col-span-8 space-y-8">
           {/* Ticket Cards Row */}
           <div className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4">
-            {tickets.map((ticket) => (
-              <div key={ticket.id} className="flex-shrink-0 w-80 bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition hover:border-primary/50">
+            {initialTickets.map((ticket) => (
+              <div 
+                key={ticket.id} 
+                className={cn(
+                  "flex-shrink-0 w-80 bg-white/5 border border-white/10 rounded-2xl p-5 transition",
+                  selectedTicket?.id === ticket.id 
+                    ? "border-primary/80 bg-white/10 shadow-lg shadow-primary/10"
+                    : "hover:bg-white/10 hover:border-primary/50"
+                )}
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-white font-semibold">{ticket.airline}</div>
                   <div className="text-gray-400 text-sm">{ticket.type}</div>
@@ -63,21 +160,30 @@ export default function BookingPage() {
                   <span className="text-gray-400 text-sm">{ticket.class}</span>
                   <span className="text-primary font-bold">{ticket.price}</span>
                 </div>
-                <button className="w-full mt-4 bg-primary hover:bg-primary/90 text-white font-semibold py-2 rounded-lg transition">
-                  Select
+                <button 
+                  onClick={() => handleSelectTicket(ticket)}
+                  className="w-full mt-4 bg-primary hover:bg-primary/90 text-white font-semibold py-2 rounded-lg transition"
+                >
+                  {selectedTicket?.id === ticket.id ? 'Selected' : 'Select'}
                 </button>
               </div>
             ))}
           </div>
 
           {/* Passenger Form */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div ref={passengerDetailsRef} className="bg-white/5 border border-white/10 rounded-2xl p-6">
             <h3 className="text-white font-semibold text-xl mb-4">
               Passenger Details
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="Full Name" />
-              <input className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="Passport Number" />
+              <div>
+                <input value={passengerName} onChange={(e) => setPassengerName(e.target.value)} className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary w-full" placeholder="Full Name" />
+                {errors.passengerName && <p className="text-destructive text-xs mt-1">{errors.passengerName}</p>}
+              </div>
+              <div>
+                <input value={passportNumber} onChange={(e) => setPassportNumber(e.target.value)} className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary w-full" placeholder="Passport Number" />
+                {errors.passportNumber && <p className="text-destructive text-xs mt-1">{errors.passportNumber}</p>}
+              </div>
             </div>
           </div>
         </div>
@@ -89,19 +195,27 @@ export default function BookingPage() {
             <h3 className="text-white font-semibold text-xl mb-4">
               Selected Ticket
             </h3>
-            <div className="text-gray-300 space-y-2 text-sm">
-              <p>Hyderabad → Dubai</p>
-              <p>Emirates EK-57</p>
-              <p>10:30 — 13:40</p>
-              <p>Business Class</p>
-            </div>
-            <div className="border-t border-white/10 mt-4 pt-4 flex justify-between text-white">
-              <span className="font-semibold">Total</span>
-              <span className="text-primary font-bold text-lg">₹42,000</span>
-            </div>
-            <button className="w-full mt-6 bg-primary hover:bg-primary/90 py-3 rounded-xl text-white font-semibold transition">
-              Continue
-            </button>
+            {selectedTicket ? (
+                <>
+                <div className="text-gray-300 space-y-2 text-sm">
+                    <p>Hyderabad → Dubai</p>
+                    <p>{selectedTicket.airline}</p>
+                    <p>{selectedTicket.departure} — {selectedTicket.arrival}</p>
+                    <p>{selectedTicket.class}</p>
+                </div>
+                <div className="border-t border-white/10 mt-4 pt-4 flex justify-between text-white">
+                    <span className="font-semibold">Total</span>
+                    <span className="text-primary font-bold text-lg">{selectedTicket.price}</span>
+                </div>
+                <button onClick={handleContinue} className="w-full mt-6 bg-primary hover:bg-primary/90 py-3 rounded-xl text-white font-semibold transition">
+                    Continue
+                </button>
+                </>
+            ) : (
+                <div className='text-center py-10'>
+                    <p className='text-muted-foreground'>No ticket selected</p>
+                </div>
+            )}
           </div>
 
           {/* Payment Panel */}
@@ -110,14 +224,24 @@ export default function BookingPage() {
               Payment
             </h3>
             <div className="space-y-3">
-              <input className="w-full bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white mb-3 placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="Card Number" />
+              <div>
+                <input value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} className="w-full bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white mb-3 placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="Card Number" />
+                {errors.cardNumber && <p className="text-destructive text-xs -mt-2 mb-2">{errors.cardNumber}</p>}
+              </div>
               <div className="grid grid-cols-2 gap-3">
-                <input className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="MM/YY" />
-                <input className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary" placeholder="CVV" />
+                <div>
+                  <input value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary w-full" placeholder="MM/YY" />
+                  {errors.expiryDate && <p className="text-destructive text-xs mt-1">{errors.expiryDate}</p>}
+                </div>
+                <div>
+                  <input value={cvv} onChange={(e) => setCvv(e.target.value)} className="bg-black/40 border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:ring-primary focus:border-primary w-full" placeholder="CVV" />
+                  {errors.cvv && <p className="text-destructive text-xs mt-1">{errors.cvv}</p>}
+                </div>
               </div>
             </div>
-            <button className="w-full mt-6 bg-primary hover:bg-primary/90 py-3 rounded-xl text-white font-semibold transition">
-              Book Ticket
+            <button onClick={handleBookTicket} disabled={isLoading} className="w-full mt-6 bg-primary hover:bg-primary/90 py-3 rounded-xl text-white font-semibold transition flex items-center justify-center disabled:opacity-70">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading ? 'Booking...' : 'Book Ticket'}
             </button>
           </div>
         </div>
