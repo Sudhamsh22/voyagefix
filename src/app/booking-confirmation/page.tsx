@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle, Plane, User, CreditCard } from 'lucide-react';
+import { CheckCircle, Plane, User, CreditCard, Train, Bus } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -30,24 +30,35 @@ function ConfirmationContent() {
     const bookingDetails = JSON.parse(decodeURIComponent(dataString));
     const { ticket, passenger, paymentLast4, bookingId } = bookingDetails;
     
+    const transportMeta = {
+        flight: { icon: Plane, label: 'Flight' },
+        train: { icon: Train, label: 'Train' },
+        bus: { icon: Bus, label: 'Bus' },
+    };
+
+    const MetaIcon = transportMeta[ticket.transport as 'flight' | 'train' | 'bus']?.icon || Plane;
+    const metaLabel = transportMeta[ticket.transport as 'flight' | 'train' | 'bus']?.label || 'Trip';
+
     return (
         <Card className="w-full max-w-2xl bg-card/50 backdrop-blur-sm">
             <CardHeader className="text-center border-b border-white/10 pb-4">
                 <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                 <CardTitle className="text-3xl font-headline">Booking Confirmed!</CardTitle>
-                <CardDescription>Your flight is booked. Bon voyage!</CardDescription>
+                <CardDescription>Your {metaLabel.toLowerCase()} is booked. Bon voyage!</CardDescription>
                 <p className="font-mono text-sm text-primary pt-2">Booking ID: {bookingId}</p>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
                 <div className="space-y-4">
-                    <h3 className="font-semibold text-lg flex items-center gap-2"><Plane className="h-5 w-5 text-primary" /> Flight Details</h3>
+                    <h3 className="font-semibold text-lg flex items-center gap-2"><MetaIcon className="h-5 w-5 text-primary" /> {metaLabel} Details</h3>
                     <div className="grid grid-cols-2 gap-4 text-sm bg-black/30 p-4 rounded-lg">
-                        <p><strong>Airline:</strong> {ticket.airline}</p>
+                        <p><strong>Operator:</strong> {ticket.operator}</p>
                         <p><strong>Route:</strong> Hyderabad → Dubai</p>
                         <p><strong>Departure:</strong> {ticket.departure}</p>
                         <p><strong>Arrival:</strong> {ticket.arrival}</p>
                         <p><strong>Class:</strong> {ticket.class}</p>
                         <p><strong>Price:</strong> {ticket.price}</p>
+                        <p><strong>Number:</strong> {ticket.number}</p>
+                        <p><strong>Details:</strong> {ticket.details}</p>
                     </div>
                 </div>
                  <div className="space-y-4">
