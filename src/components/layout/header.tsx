@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, User as UserIcon, LogOut, Globe, Briefcase, ClipboardList } from 'lucide-react';
+import { Menu, Search, User as UserIcon, LogOut, Globe, Briefcase, ClipboardList, Ticket } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   DropdownMenu,
@@ -22,6 +22,7 @@ const navLinks = [
   { href: '/destinations', label: 'Destinations', icon: Globe },
   { href: '/planner', label: 'AI Planner', icon: ClipboardList },
   { href: '/packages', label: 'Packages', icon: Briefcase },
+  { href: '/booking', label: 'Booking', icon: Ticket },
   { href: '/my-trips', label: 'My Trips', icon: UserIcon },
 ];
 
