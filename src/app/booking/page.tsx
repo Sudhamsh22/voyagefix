@@ -138,10 +138,11 @@ export default function BookingPage() {
       {/* Hero Banner (Route Preview) */}
       <section className="relative h-[40vh] flex items-end">
         <Image 
-            src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=2070&auto=format&fit=crop" 
+            src="https://picsum.photos/seed/dubai/1920/768" 
             alt="Dubai skyline from a plane window" 
             fill 
             className="object-cover" 
+            data-ai-hint="dubai skyline"
             priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
